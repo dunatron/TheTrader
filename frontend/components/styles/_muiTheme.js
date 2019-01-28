@@ -161,7 +161,7 @@ const theme = {
   },
   typography: {
     useNextVariants: true,
-    fontFamily: "GustanLight",
+    fontFamily: "GustanMedium",
     fontSize: "1.5rem",
     fontWeightLight: 300,
     fontWeightRegular: 400,

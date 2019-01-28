@@ -27,6 +27,24 @@ injectGlobal`
     font-style:   normal;
     font-weight:  200;
   }
+  @font-face {
+    font-family: "GustanMedium";
+    src: url('./static/fonts/Gustan-Medium.woff') format('woff'); /* IE9 Compat Modes */
+    font-style:   normal;
+    font-weight:  200;
+  }
+  @font-face {
+    font-family: "GustanBold";
+    src: url('./static/fonts/Gustan-Bold.woff') format('woff'); /* IE9 Compat Modes */
+    font-style:   normal;
+    font-weight:  200;
+  }
+  @font-face {
+    font-family: "GustanExtraBlack";
+    src: url('./static/fonts/Gustan-Extrablack.woff') format('woff'); /* IE9 Compat Modes */
+    font-style:   normal;
+    font-weight:  200;
+  }
   html {
     box-sizing: border-box;
     font-size: 10px;
