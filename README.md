@@ -35,6 +35,7 @@
   - It has a prop called `Component` which will render the current page we are on as its component. _(the name of the route is the page that will be rendered from the pages folder)_
   - This Component prop is wrapped in a `Page` component from the `components` folder and is where most of our theming wil take place
 - Page.js _(components/Page.js)_ - Is where we can do our theming and wraps every page:
+  - entry point for theming such as `StyledComponents` and `Material-UI` setup
   - contains the Header.js component as we want to include it on every page
   - contains our `Meta.js` component to include all of the classic meta tags
   - uses the children prop to inherit and render the current page we are on.
@@ -51,6 +52,10 @@
   - contains our viewport meta for responsive design
   - uses utf-8 for character encoding
   - loads in our favicon
+
+## Global/InjectGlobal Css styles
+
+- font-size is a base 10px on the html tag meaning when we do rem 1.5 it will be 15px i.e a multiple of base 10
 
 ## Component Tree
 

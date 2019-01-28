@@ -1,17 +1,64 @@
 import React, { Component } from "react"
+import Link from "next/link"
 import Nav from "./Nav"
+import styled from "styled-components"
+
+const Logo = styled.h1`
+  font-size: 4rem;
+  margin: 0 2rem;
+  position: relative;
+  z-index: 2;
+  /* padding: 7px; */
+  transform: skew(-7deg);
+  a {
+    border: 1px solid ${props => props.theme.palette.primary.main};
+    border-radius: 0 25px 0 25px;
+    padding: 0.5rem 1rem;
+    background: ${props => props.theme.palette.primary.main};
+    color: ${props => props.theme.palette.primary.contrastText};
+  }
+  @media (max-width: ${props => props.theme.breakpoints.values.md}px) {
+    margin: 0 7px;
+    text-align: center;
+  }
+`
+const StyledHeader = styled.header`
+  .bar {
+    border-bottom: 10px solid ${props => props.theme.palette.common.black};
+    /* border-bottom: 10px solid ${props =>
+      props.theme.palette.secondary.main}; */
+    display: grid;
+    grid-template-columns: auto 1fr;
+    justify-content: space-between;
+    align-items: stretch;
+    @media (max-width: 1300px) {
+      grid-template-columns: 1fr;
+      justify-content: center;
+    }
+  }
+  .sub-bar {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    border-bottom: 1px solid ${props => props.theme.palette.common.lightGrey};
+  }
+`
 
 const Header = () => (
-  <div>
+  <StyledHeader>
     <div className="bar">
-      <a href="/">The_Trader</a>
+      <Logo>
+        <Link href="/">
+          <a>The_Trader</a>
+        </Link>
+      </Logo>
+
       <Nav />
     </div>
     <div className="sub-bar">
       <p>Search</p>
     </div>
     <div>Cart</div>
-  </div>
+  </StyledHeader>
 )
 
 export default Header
