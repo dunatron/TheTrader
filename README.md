@@ -35,7 +35,8 @@
   - It has a prop called `Component` which will render the current page we are on as its component. _(the name of the route is the page that will be rendered from the pages folder)_
   - This Component prop is wrapped in a `Page` component from the `components` folder and is where most of our theming wil take place
 - Page.js _(components/Page.js)_ - Is where we can do our theming and wraps every page:
-  - contains the Header.js Component as we want to include it on every page
+  - contains the Header.js component as we want to include it on every page
+  - contains our `Meta.js` component to include all of the classic meta tags
   - uses the children prop to inherit and render the current page we are on.
 - Header.js _(components/Header.js)_ - Our standard Header to be included on every page:
   - contains our `Nav.js` component
@@ -43,6 +44,30 @@
   - contains our cart _(ToDo: update when we have entry component)_
 - Meta.js _(component/Meta.js)_ - Takes care of all the meta tags you would normally see in an html document:
   - contains `next/head` to update our document header and do side effects behind the scenes
-  - Title tag
+  - title tag
   - any external css you may need to include
   - fb, twitter etc meta tags
+  - loads in our `nProgress` css from the static folder
+  - contains our viewport meta for responsive design
+  - uses utf-8 for character encoding
+  - loads in our favicon
+
+## Component Tree
+
+```JS
+ <App>
+  <Container>
+    <Page>
+      <Meta>
+        <SideEffect(Head)>
+          <Head />
+        </SideEffect(Head)/>
+      </Meta>
+      <Header>
+        <Nav>
+      </Header>
+      <NextPageComponent>
+    </Page>
+  </Container>
+ </App>
+```
