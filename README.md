@@ -83,3 +83,11 @@
   </Container>
  </App>
 ```
+
+## Prisma Setup.
+
+- with the boiler plate navigate to the backend and install prisma globally `npm i -g prisma`
+- Then run `prisma login` which will open up your browser _(You will want a prisma.io account)_
+- Then run `prisma init` which will run you through a setup process on where you want to deploy your prisma server and will create 2 files for you:
+  - `prisma.yml` -
+  - `datamodel.graphql` -
