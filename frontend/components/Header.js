@@ -1,7 +1,21 @@
 import React, { Component } from "react"
-import Link from "next/link"
-import Nav from "./Nav"
 import styled from "styled-components"
+import Link from "next/link"
+import Router from "next/router"
+import NProgress from "nprogress"
+import Nav from "./Nav"
+
+Router.onRouteChangeStart = () => {
+  NProgress.start()
+}
+
+Router.onRouteChangeComplete = () => {
+  NProgress.done()
+}
+
+Router.onRouteChangeError = () => {
+  NProgress.done()
+}
 
 const Logo = styled.h1`
   font-size: 4rem;
@@ -11,11 +25,11 @@ const Logo = styled.h1`
   /* padding: 7px; */
   transform: skew(-7deg);
   a {
-    border: 1px solid ${props => props.theme.palette.primary.main};
+    border: 1px solid ${props => props.theme.palette.secondary.main};
     border-radius: 0 25px 0 25px;
     padding: 0.5rem 1rem;
-    background: ${props => props.theme.palette.primary.main};
-    color: ${props => props.theme.palette.primary.contrastText};
+    background: ${props => props.theme.palette.secondary.main};
+    color: ${props => props.theme.palette.secondary.contrastText};
   }
   @media (max-width: ${props => props.theme.breakpoints.values.md}px) {
     margin: 0 7px;
@@ -24,10 +38,10 @@ const Logo = styled.h1`
 `
 const StyledHeader = styled.header`
   .bar {
-    border-bottom: 10px solid ${props => props.theme.palette.common.black};
     /* border-bottom: 10px solid ${props =>
-      props.theme.palette.secondary.main}; */
-    display: grid;
+      props.theme.palette.common.black}; */
+    border-bottom: 10px solid ${props => props.theme.palette.primary.light}; 
+    display: grid; 
     grid-template-columns: auto 1fr;
     justify-content: space-between;
     align-items: stretch;

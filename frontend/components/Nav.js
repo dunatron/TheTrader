@@ -16,16 +16,16 @@ const Nav = () => (
     <NavButton color="secondary" onClick={() => handleLink("/items")}>
       Items
     </NavButton>
-    <NavButton color="secondary" onClick={() => handleLink("/sell")}>
+    <NavButton color="primary" onClick={() => handleLink("/sell")}>
       Sell
     </NavButton>
-    <NavButton color="secondary" onClick={() => handleLink("/signup")}>
+    <NavButton color="primary" onClick={() => handleLink("/signup")}>
       signup
     </NavButton>
-    <NavButton color="secondary" onClick={() => handleLink("/orders")}>
+    <NavButton color="primary" onClick={() => handleLink("/orders")}>
       Orders
     </NavButton>
-    <NavButton color="secondary" onClick={() => handleLink("/account")}>
+    <NavButton color="primary" onClick={() => handleLink("/account")}>
       Account
     </NavButton>
   </NavStyles>

@@ -66,15 +66,20 @@ injectGlobal`
   button {  font-family: ${theme.typography.fontFamily}; }
   #nprogress {
     .bar {
-      height:20px;
-      background: ${props => props.theme.palette.secondary.main};
+      height:5px;
+      background: ${theme.palette.secondary.main};
+      /* background: #3f51b5; */
     }
-    .spinner-icon {
-      border-top-color: #3f51b5;
-     border-left-color: #3f51b5;
+    .spinner {
+      .spinner-icon {
+        border-top-color:${theme.palette.secondary.main};
+        border-left-color: ${theme.palette.secondary.main};
+      }
     }
     .peg {
-      box-shadow: 0 0 10px #3f51b5, 0 0 5px #3f51b5;
+       box-shadow: 0 0 10px ${theme.palette.secondary.main}, 0 0 5px ${
+  theme.palette.secondary.main
+};
     }
   }
 `

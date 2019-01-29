@@ -8,7 +8,9 @@ const NavButton = styled(Button)`
     padding: 1rem 3rem;
     text-transform: uppercase;
     font-family: "GustanBold";
-    /* color: ${props => props.theme.palette.common.black}; */
+
+    /* color: ${props => props.theme.palette.common.grey}; */
+    color: ${props => props.theme.palette.primary.light};
     @media (max-width: ${props => props.theme.breakpoints.values.md}px) {
       font-size: 1.3rem;
     }
@@ -32,6 +34,8 @@ const NavButton = styled(Button)`
   &:hover,
   &:focus {
     outline: none;
+    bac: ${props => props.theme.palette.primary.main};
+    color: ${props => props.theme.palette.primary.main};
     &:after {
       width: calc(100% - 60px);
     }
