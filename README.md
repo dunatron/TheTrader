@@ -84,10 +84,60 @@
  </App>
 ```
 
+## Backend scripts
+
+- e.g inside the backend directory run `yarn run deploy`
+
+```json
+"scripts": {
+  "start": "nodemon -e js,graphql -x node src/index.js",
+  "dev": "nodemon -e js,graphql -x node --inspect src/index.js",
+  "test": "jest",
+  "deploy": "prisma deploy --env-file variables.env"
+}
+```
+
+## Frontend scripts
+
+- e.g inside the frontend directory run `yarn run dev`
+
+```json
+"scripts": {
+  "dev": "next -p 7777",
+  "build": "next build",
+  "start": "next start",
+  "test": "NODE_ENV=test jest --watch",
+  "heroku-postbuild": "next build"
+}
+```
+
 ## Prisma Setup.
 
 - with the boiler plate navigate to the backend and install prisma globally `npm i -g prisma`
 - Then run `prisma login` which will open up your browser _(You will want a prisma.io account)_
 - Then run `prisma init` which will run you through a setup process on where you want to deploy your prisma server and will create 2 files for you:
-  - `prisma.yml` -
+  - `prisma.yml` - contains our server endpoint for setup, you will want to modify this file and create a `variables.env` file
   - `datamodel.graphql` -
+
+###### prisma.yml
+
+```yml
+endpoint: ${env:PRISMA_ENDPOINT}
+datamodel: datamodel.graphql
+# secret is the database password, ommiting it in dev means easier development
+# secret: ${env:PRISMA_SECRET}
+hooks:
+  post-deploy:
+    - graphql get-schema -p prisma
+```
+
+###### variables.env
+
+```.env
+FRONTEND_URL="http://localhost:7777"
+PRISMA_ENDPOINT="https://us1.prisma.sh/heath-dunlop-37e897/the-trader/dev"
+PRISMA_SECRET="MyDataBasePassword@$92"
+APP_SECRET="jwtsecret123"
+STRIPE_SECRET="sk_123youchanget his"
+PORT=4444
+```

@@ -1,2 +1,7 @@
-endpoint: https://us1.prisma.sh/heath-dunlop-37e897/the-trader/dev
+endpoint: ${env:PRISMA_ENDPOINT}
 datamodel: datamodel.graphql
+# secret is the database password, ommiting it in dev means easier development
+# secret: ${env:PRISMA_SECRET}
+hooks:
+  post-deploy:
+    - graphql get-schema -p prisma
