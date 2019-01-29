@@ -87,7 +87,8 @@
 ## Architecture - Back-end
 
 ## Backend scripts
- - db.js 
+
+- db.js _(src/db.js)_ - This file connects to the remote prisma DB and gives us the ability to query it with JS
 
 - e.g inside the backend directory run `yarn run deploy`
 
