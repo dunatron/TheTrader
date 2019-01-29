@@ -86,9 +86,19 @@
 
 ## Architecture - Back-end
 
-## Backend scripts
-
+- index.js _(src/index.js)_ - This is the entry point for our application and serves as the following:
+  - imports our `createServer.js` file and starts it
+  - implements cors when starting server so that only our site and credentials can hit it
+  - something else
 - db.js _(src/db.js)_ - This file connects to the remote prisma DB and gives us the ability to query it with JS
+- createServer.js _(src/createServer.js)_ - Creates our GraphQL Yoga server
+
+  - Is an express server so can use other express middlewre
+  - sits on top of apollo server
+  - imports our resolvers _(Queries and Mutations)_ and sets them up with our server
+  - _note: you would need to import everything graphql yoga does to get a working grahql server_
+
+## Backend scripts
 
 - e.g inside the backend directory run `yarn run deploy`
 
@@ -145,3 +155,7 @@ APP_SECRET="jwtsecret123"
 STRIPE_SECRET="sk_123youchanget his"
 PORT=4444
 ```
+
+### Other Libraries of Note
+
+- NProgress
