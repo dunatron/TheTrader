@@ -84,7 +84,10 @@
  </App>
 ```
 
+## Architecture - Back-end
+
 ## Backend scripts
+ - db.js 
 
 - e.g inside the backend directory run `yarn run deploy`
 

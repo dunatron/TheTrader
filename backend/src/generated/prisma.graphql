@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/heath-dunlop-37e897/the-trader/dev
-# timestamp: Tue Jan 29 2019 18:30:57 GMT+1300 (New Zealand Daylight Time)
+# timestamp: Tue Jan 29 2019 18:42:34 GMT+1300 (New Zealand Daylight Time)
 
 type AggregateUser {
   count: Int!
