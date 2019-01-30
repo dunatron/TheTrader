@@ -1,3 +1,4 @@
+import green from "@material-ui/core/colors/green"
 const theme = {
   direction: "ltr",
   maxWidth: 1200,
@@ -16,12 +17,13 @@ const theme = {
       lightGrey: "#E1E1E1",
     },
     type: "light",
-    primary: {
-      light: "#6d6d6d",
-      main: "#424242",
-      dark: "#1b1b1b",
-      contrastText: "#ffffff",
-    },
+    // primary: {
+    //   light: "#6d6d6d",
+    //   main: "#424242",
+    //   dark: "#1b1b1b",
+    //   contrastText: "#ffffff",
+    // },
+    primary: green,
     secondary: {
       light: "#ff5bb1",
       main: "#dd1482",

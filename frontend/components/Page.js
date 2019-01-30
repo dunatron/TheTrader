@@ -1,10 +1,14 @@
 import React, { Component } from "react"
 import styled, { ThemeProvider, injectGlobal } from "styled-components"
+import {
+  withStyles,
+  MuiThemeProvider,
+  createMuiTheme,
+} from "@material-ui/core/styles"
 import Header from "./Header"
 import Meta from "./Meta"
 // Material UI
 import NoSsr from "@material-ui/core/NoSsr"
-import { createMuiTheme } from "@material-ui/core/styles"
 import muiTheme from "./styles/_muiTheme"
 
 const theme = createMuiTheme(muiTheme)
@@ -22,7 +26,7 @@ const Inner = styled.div`
 
 injectGlobal`
   @font-face {
-    font-family: ${theme.typography.fontFamily};
+    font-family: "GustanLight";
     src: url('./static/fonts/Gustan-Light.woff') format('woff'); /* IE9 Compat Modes */
     font-style:   normal;
     font-weight:  200;
@@ -88,13 +92,15 @@ class Page extends Component {
   render() {
     return (
       <NoSsr>
-        <ThemeProvider theme={theme}>
-          <StyledPage>
-            <Meta />
-            <Header />
-            <Inner>{this.props.children}</Inner>
-          </StyledPage>
-        </ThemeProvider>
+        <MuiThemeProvider theme={theme}>
+          <ThemeProvider theme={theme}>
+            <StyledPage>
+              <Meta />
+              <Header />
+              <Inner>{this.props.children}</Inner>
+            </StyledPage>
+          </ThemeProvider>
+        </MuiThemeProvider>
       </NoSsr>
     )
   }

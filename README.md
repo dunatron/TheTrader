@@ -159,3 +159,6 @@ PORT=4444
 ### Other Libraries of Note
 
 - NProgress
+- money.js
+  - Simple and tiny JavaScript library for realtime currency conversion and exchange rate calculation, from any currency, to any currency.
+  - Now maintained by Open Exchange Rates
