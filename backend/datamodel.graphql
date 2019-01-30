@@ -2,6 +2,7 @@ type User {
   id: ID! @unique
   name: String!
   email: String!
+  currency: CURRENCY_CODES! @default(value: "NZD")
 }
 
 type Item {
@@ -10,8 +11,44 @@ type Item {
   description: String!
   image: String
   largeImage: String
+  currency: CURRENCY_CODES! @default(value: "NZD")
   price: Int!
   # createAt: DateTime!
   # updatedAt: DateTime!
   # user: User!
+}
+
+enum CURRENCY_CODES {
+  NZD
+  CAD
+  MXN
+  AUD
+  CNY
+  PHP
+  GBP
+  CZK
+  USD
+  SEK
+  NOK
+  TRY
+  IDR
+  ZAR
+  MYR
+  HKD
+  HUF
+  ISK
+  HRK
+  JPY
+  BGN
+  SGD
+  RUB
+  RON
+  CHF
+  DKK
+  INR
+  KRW
+  THB
+  BRL
+  PLN
+  ILS
 }

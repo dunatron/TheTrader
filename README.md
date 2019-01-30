@@ -98,6 +98,33 @@
   - imports our resolvers _(Queries and Mutations)_ and sets them up with our server
   - _note: you would need to import everything graphql yoga does to get a working grahql server_
 
+### Queries
+
+#### available currency codes
+
+```
+query currencyCodesEnum {
+  __type(name: "CURRENCY_CODES") {
+    name
+    enumValues {
+      name
+    }
+  }
+}
+```
+
+#### exchangeRates
+
+```
+query exchangeRates($baseCurrency:String!){
+	exchangeRates(baseCurrency:$baseCurrency)
+}
+// variables
+{
+  "baseCurrency": "CAD"
+}
+```
+
 ## Backend scripts
 
 - e.g inside the backend directory run `yarn run deploy`

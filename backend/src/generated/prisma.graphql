@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/heath-dunlop-37e897/the-trader/dev
-# timestamp: Wed Jan 30 2019 14:34:30 GMT+1300 (New Zealand Daylight Time)
+# timestamp: Thu Jan 31 2019 12:38:45 GMT+1300 (New Zealand Daylight Time)
 
 type AggregateItem {
   count: Int!
@@ -14,12 +14,48 @@ type BatchPayload {
   count: Long!
 }
 
+enum CURRENCY_CODES {
+  NZD
+  CAD
+  MXN
+  AUD
+  CNY
+  PHP
+  GBP
+  CZK
+  USD
+  SEK
+  NOK
+  TRY
+  IDR
+  ZAR
+  MYR
+  HKD
+  HUF
+  ISK
+  HRK
+  JPY
+  BGN
+  SGD
+  RUB
+  RON
+  CHF
+  DKK
+  INR
+  KRW
+  THB
+  BRL
+  PLN
+  ILS
+}
+
 type Item implements Node {
   id: ID!
   title: String!
   description: String!
   image: String
   largeImage: String
+  currency: CURRENCY_CODES!
   price: Int!
 }
 
@@ -38,6 +74,7 @@ input ItemCreateInput {
   description: String!
   image: String
   largeImage: String
+  currency: CURRENCY_CODES
   price: Int!
 }
 
@@ -61,6 +98,8 @@ enum ItemOrderByInput {
   image_DESC
   largeImage_ASC
   largeImage_DESC
+  currency_ASC
+  currency_DESC
   price_ASC
   price_DESC
   updatedAt_ASC
@@ -75,6 +114,7 @@ type ItemPreviousValues {
   description: String!
   image: String
   largeImage: String
+  currency: CURRENCY_CODES!
   price: Int!
 }
 
@@ -122,6 +162,7 @@ input ItemUpdateInput {
   description: String
   image: String
   largeImage: String
+  currency: CURRENCY_CODES
   price: Int
 }
 
@@ -130,6 +171,7 @@ input ItemUpdateManyMutationInput {
   description: String
   image: String
   largeImage: String
+  currency: CURRENCY_CODES
   price: Int
 }
 
@@ -342,6 +384,16 @@ input ItemWhereInput {
 
   """All values not ending with the given string."""
   largeImage_not_ends_with: String
+  currency: CURRENCY_CODES
+
+  """All values that are not equal to given value."""
+  currency_not: CURRENCY_CODES
+
+  """All values that are contained in given list."""
+  currency_in: [CURRENCY_CODES!]
+
+  """All values that are not contained in given list."""
+  currency_not_in: [CURRENCY_CODES!]
   price: Int
 
   """All values that are not equal to given value."""
@@ -442,6 +494,7 @@ type User implements Node {
   id: ID!
   name: String!
   email: String!
+  currency: CURRENCY_CODES!
 }
 
 """A connection to a list of items."""
@@ -457,6 +510,7 @@ type UserConnection {
 input UserCreateInput {
   name: String!
   email: String!
+  currency: CURRENCY_CODES
 }
 
 """An edge in a connection."""
@@ -475,6 +529,8 @@ enum UserOrderByInput {
   name_DESC
   email_ASC
   email_DESC
+  currency_ASC
+  currency_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -485,6 +541,7 @@ type UserPreviousValues {
   id: ID!
   name: String!
   email: String!
+  currency: CURRENCY_CODES!
 }
 
 type UserSubscriptionPayload {
@@ -529,11 +586,13 @@ input UserSubscriptionWhereInput {
 input UserUpdateInput {
   name: String
   email: String
+  currency: CURRENCY_CODES
 }
 
 input UserUpdateManyMutationInput {
   name: String
   email: String
+  currency: CURRENCY_CODES
 }
 
 input UserWhereInput {
@@ -665,6 +724,16 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   email_not_ends_with: String
+  currency: CURRENCY_CODES
+
+  """All values that are not equal to given value."""
+  currency_not: CURRENCY_CODES
+
+  """All values that are contained in given list."""
+  currency_in: [CURRENCY_CODES!]
+
+  """All values that are not contained in given list."""
+  currency_not_in: [CURRENCY_CODES!]
 }
 
 input UserWhereUniqueInput {
