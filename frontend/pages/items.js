@@ -1,6 +1,8 @@
+import ItemsComponent from "../components/Items"
+
 const ItemsPage = props => (
   <div>
-    <h1>ItemsPage</h1>
+    <ItemsComponent />
   </div>
 )
 

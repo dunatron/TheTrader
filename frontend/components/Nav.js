@@ -14,7 +14,7 @@ const handleLink = (route = "/", query = {}) => {
 const Nav = () => (
   <NavStyles>
     <NavButton color="secondary" onClick={() => handleLink("/items")}>
-      Items
+      Shop
     </NavButton>
     <NavButton color="primary" onClick={() => handleLink("/sell")}>
       Sell
