@@ -2,30 +2,8 @@ const { forwardTo } = require("prisma-binding")
 
 const Query = {
   items: forwardTo("db"),
-  // me(parent, args, ctx, info) {
-  //   // check if there is a current user ID
-  //   if (!ctx.request.userId) {
-  //     return null
-  //   }
-  //   return ctx.db.query.user(
-  //     {
-  //       where: { id: ctx.request.userId },
-  //     },
-  //     info
-  //   )
-  // },
-  // async users(parent, args, ctx, info) {
-  //   // 1. Check if they are logged in
-  //   if (!ctx.request.userId) {
-  //     throw new Error("You must be logged in!")
-  //   }
-  //   console.log(ctx.request.userId)
-  //   // 2. Check if the user has the permissions to query all the users
-  //   hasPermission(ctx.request.user, ["ADMIN", "PERMISSIONUPDATE"])
-
-  //   // 2. if they do, query all the users!
-  //   return ctx.db.query.users({}, info)
-  // },
+  // This would be better off on the client. When the user baseCurrency changes the we just fetch new data directly from the front end.
+  // Or rather the client makes 1 call instead of 2(1 to backend 1 to API)
   async exchangeRates(parent, args, ctx, info) {
     const baseCurrency = args.baseCurrency // Will be logged in users currency
     const data = await fetch(
