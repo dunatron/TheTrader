@@ -1,14 +1,14 @@
 import styled from "styled-components"
-import TextField from "@material-ui/core/TextField"
+import FormControl from "@material-ui/core/FormControl"
 
-const TextInput = styled(TextField)`
+const FormControlStyle = styled(FormControl)`
   && {
     margin: ${p => p.theme.spacing.unit}px;
     margin-top: ${p => p.theme.form.fields.marginTop};
-    /* font-size: ${p => p.theme.form.fields.fontSize}; */
     min-width: ${p => p.theme.form.fields.minWidth};
     max-width: ${p => p.theme.form.fields.maxWidth};
+    font-size: ${p => p.theme.form.fields.fontSize};
   }
 `
 
-export default TextInput
+export default FormControlStyle

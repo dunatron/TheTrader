@@ -12,6 +12,9 @@ import NoSsr from "@material-ui/core/NoSsr"
 import muiTheme from "./styles/_muiTheme"
 
 const theme = createMuiTheme(muiTheme)
+// const theme = createMuiTheme()
+
+console.log("Theme => ", JSON.stringify(theme))
 
 const StyledPage = styled.div`
   background: white;
@@ -21,7 +24,7 @@ const StyledPage = styled.div`
 const Inner = styled.div`
   max-width: ${props => props.theme.maxWidth}px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
 `
 
 injectGlobal`
@@ -51,7 +54,8 @@ injectGlobal`
   }
   html {
     box-sizing: border-box;
-    font-size: 10px;
+    /* font-size: 10px; */
+    font-size: 16px;
   }
   *, *:before, *:after {
     box-sizing: inherit;
@@ -59,7 +63,7 @@ injectGlobal`
   body {
     padding: 0;
     margin: 0;
-    font-size: ${theme.typography.fontSize};
+    font-size: ${theme.typography.fontSize}px;
     line-height: 2;
     font-family: ${theme.typography.fontFamily};
   }

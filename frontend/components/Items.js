@@ -27,6 +27,11 @@ const ItemsList = styled.div`
   grid-gap: 60px;
   max-width: 1200px;
   margin: 0 auto;
+  @media (max-width: ${props => props.theme.breakpoints.values.sm}px) {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
 `
 
 export default class Items extends Component {
@@ -38,17 +43,12 @@ export default class Items extends Component {
           {({ data, error, loading }) => {
             if (loading) return <p>loading</p>
             if (error) return <p>Error: {error.message}</p>
+            console.log("Items data => ", data)
             return (
               <ItemsList>
-                <ItemComponent
-                  item={{
-                    title: "Test",
-                    price: 30,
-                  }}
-                />
-                <ItemComponent item={{ title: "yes", price: 30 }} />
-                <ItemComponent item={{ title: "yes", price: 30 }} />
-                <ItemComponent item={{ title: "yes", price: 30 }} />
+                {data.items.map(item => (
+                  <ItemComponent item={item} key={item.id} />
+                ))}
               </ItemsList>
             )
           }}

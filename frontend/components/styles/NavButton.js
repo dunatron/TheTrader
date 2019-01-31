@@ -4,8 +4,10 @@ import Button from "@material-ui/core/Button"
 const NavButton = styled(Button)`
   && {
     border-radius: 0;
-    font-size: 1.5rem;
-    padding: 1rem 3rem;
+    /* font-size: 1.5rem; */
+    font-size: 1.0rem;
+    /* padding: 1rem 3rem; */
+    padding: 0.5rem 1.5rem;
     text-transform: uppercase;
     font-family: "GustanBold";
 

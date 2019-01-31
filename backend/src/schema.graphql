@@ -1,11 +1,13 @@
 # import * from './generated/prisma.graphql'
 scalar Json
+scalar Float
 
 type Mutation {
   createItem(
     title: String
     description: String
-    price: Int
+    price: Float
+    # price: Int
     image: String
     largeImage: String
     currency: CURRENCY_CODES
@@ -14,5 +16,6 @@ type Mutation {
 
 type Query {
   items: [Item]!
+  item(where: ItemWhereUniqueInput!): Item
   exchangeRates(baseCurrency: String!): Json
 }

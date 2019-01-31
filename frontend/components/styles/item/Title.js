@@ -7,13 +7,13 @@ const Title = styled.h3`
   flex-wrap: wrap;
   justify-content: center;
   transform: skew(-5deg) rotate(-1deg);
-  margin-top: -3rem;
+  margin-top: -2rem;
   text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
   a {
     background: ${props => props.theme.palette.primary.main};
     display: inline;
     line-height: 1.3;
-    font-size: 4rem;
+    font-size: 2rem;
     text-align: center;
     color: ${props => props.theme.palette.primary.contrastText};
     padding: 0 1rem;
