@@ -25,6 +25,7 @@ class Item extends Component {
             <a>{item.title}</a>
           </Link>
         </Title>
+        {/* <PriceTag>{item.price}</PriceTag> */}
         <PriceTag>{formatMoney(item.price)}</PriceTag>
         <p>{item.description}</p>
 
