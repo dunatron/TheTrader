@@ -3,8 +3,6 @@ import { Mutation } from "react-apollo"
 import CardHeader from "@material-ui/core/CardHeader"
 import CardMedia from "@material-ui/core/CardMedia"
 import CardContent from "@material-ui/core/CardContent"
-import Typography from "@material-ui/core/Typography"
-import IconButton from "@material-ui/core/IconButton"
 import gql from "graphql-tag"
 import Router from "next/router"
 import styled from "styled-components"
@@ -74,9 +72,7 @@ class CreateItem extends Component {
   }
   uploadFile = async e => {
     this.setState({ uploading: true })
-    console.group("FILE UPLOAD START IN CLOUDINARY")
     const file = this.state.file.rawFile
-    console.log("file => ", file)
     const data = new FormData()
     data.append("file", file)
     data.append("upload_preset", "thetrader") // needed by cloudinary
@@ -87,15 +83,12 @@ class CreateItem extends Component {
         body: data,
       }
     )
-    console.log("cloudinary res")
     const cloudinaryFile = await res.json()
     this.setState({
       image: cloudinaryFile.secure_url,
       largeImage: cloudinaryFile.eager[0].secure_url,
       uploading: false,
     })
-
-    console.groupEnd("")
   }
 
   someFunc() {
@@ -152,12 +145,6 @@ class CreateItem extends Component {
           }
           title={<Title>Sell an Item</Title>}
         />
-
-        {/* <img
-          id="blah"
-          src={this.state.file ? this.state.file.data : null}
-          alt="your image"
-        /> */}
         <CardContent style={{ paddingTop: 0 }}>
           <Mutation
             mutation={CREATE_ITEM_MUTATION}
@@ -170,7 +157,6 @@ class CreateItem extends Component {
                 <FieldSet
                   disabled={loading || uploading}
                   aria-busy={loading || uploading}>
-
                   <TextInput
                     id="create-item-title"
                     name="title"
@@ -205,11 +191,9 @@ class CreateItem extends Component {
                   />
                   {this.state.file && (
                     <CardMedia
-                      // image="/static/images/cards/paella.jpg"
                       component="img"
                       src={this.state.file.data}
                       image={this.state.file.data}
-                      // image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABHQA…Gkd1hlU3KWV1djV6vF78B6JhHez9KHMQAAAAASUVORK5CYII="
                       title={this.state.file.name}
                     />
                   )}
