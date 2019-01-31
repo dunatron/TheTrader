@@ -183,6 +183,12 @@ STRIPE_SECRET="sk_123youchanget his"
 PORT=4444
 ```
 
+## Notes on files
+
+- If it where a self server
+  - https://www.youtube.com/watch?v=bLQqkeVT7os
+- deploying to heroukou use a external service such as cloudinary
+
 ### Other Libraries of Note
 
 - NProgress

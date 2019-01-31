@@ -17,6 +17,7 @@ import FieldSet from "./styles/FieldSet"
 import CurrencyCodesSelect from "./SelectCurrencyCode"
 import Button from "./styles/Button"
 import Error from "./ErrorMessage"
+import FileUploader from "./FileUploader"
 // https://github.com/exchangeratesapi/exchangeratesapi
 var fx = require("money")
 
@@ -55,20 +56,46 @@ class CreateItem extends Component {
     largeImage: "",
     price: 0.0,
     currency: "NZD",
+    file: null,
+    uploading: false,
   }
 
   handleChange = e => {
     const { name, type, value } = e.target
     const val = type === "number" ? parseFloat(value) : value
-    console.log("val => ", val)
     this.setState({
       [name]: val,
     })
-    // const { name, type, value } = e.target
-    // const val = type === "number" ? parseFloat(value) : value
-    // const numAsNum = type === "number" ? parseFloat(value).toFixed(2) : value
-    // console.log("numAsNum => ", numAsNum)
-    // this.setState({ [name]: val })
+  }
+  setFileInState = d => {
+    this.setState({
+      file: d,
+    })
+  }
+  uploadFile = async e => {
+    this.setState({ uploading: true })
+    console.group("FILE UPLOAD START IN CLOUDINARY")
+    const file = this.state.file.rawFile
+    console.log("file => ", file)
+    const data = new FormData()
+    data.append("file", file)
+    data.append("upload_preset", "thetrader") // needed by cloudinary
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/dkhe0hx1r/image/upload",
+      {
+        method: "POST",
+        body: data,
+      }
+    )
+    console.log("cloudinary res")
+    const cloudinaryFile = await res.json()
+    this.setState({
+      image: cloudinaryFile.secure_url,
+      largeImage: cloudinaryFile.eager[0].secure_url,
+      uploading: false,
+    })
+
+    console.groupEnd("")
   }
 
   someFunc() {
@@ -89,6 +116,7 @@ class CreateItem extends Component {
     e.preventDefault()
     alert("Form submission")
     // call the mutation
+    await this.uploadFile()
     const res = await createItem()
     // change them to the single item page
     console.log(res)
@@ -99,10 +127,20 @@ class CreateItem extends Component {
   }
 
   _getQueryVariables = () => {
-    return { ...this.state, price: parseFloat(this.state.price) }
+    const data = {
+      title: this.state.title,
+      description: this.state.description,
+      price: parseFloat(this.state.price),
+      image: this.state.image,
+      largeImage: this.state.largeImage,
+      currency: this.state.currency,
+    }
+    return { ...data }
   }
 
   render() {
+    console.log("this.state ", this.state)
+    const { uploading } = this.state
     return (
       <Card raised={true} theme={{ maxWidth: 350 }}>
         <CardHeader
@@ -114,10 +152,12 @@ class CreateItem extends Component {
           }
           title={<Title>Sell an Item</Title>}
         />
-        <CardMedia
-          // image="/static/images/cards/paella.jpg"
-          title="Paella dish"
-        />
+
+        {/* <img
+          id="blah"
+          src={this.state.file ? this.state.file.data : null}
+          alt="your image"
+        /> */}
         <CardContent style={{ paddingTop: 0 }}>
           <Mutation
             mutation={CREATE_ITEM_MUTATION}
@@ -127,7 +167,10 @@ class CreateItem extends Component {
                 data-test="form"
                 onSubmit={e => this.submitForm(e, createItem)}>
                 <Error error={error} />
-                <FieldSet disabled={loading} aria-busy={loading}>
+                <FieldSet
+                  disabled={loading || uploading}
+                  aria-busy={loading || uploading}>
+
                   <TextInput
                     id="create-item-title"
                     name="title"
@@ -157,6 +200,19 @@ class CreateItem extends Component {
                       shrink: true,
                     }}
                   />
+                  <FileUploader
+                    processData={fileData => this.setFileInState(fileData)}
+                  />
+                  {this.state.file && (
+                    <CardMedia
+                      // image="/static/images/cards/paella.jpg"
+                      component="img"
+                      src={this.state.file.data}
+                      image={this.state.file.data}
+                      // image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABHQA…Gkd1hlU3KWV1djV6vF78B6JhHez9KHMQAAAAASUVORK5CYII="
+                      title={this.state.file.name}
+                    />
+                  )}
                   <Button
                     size="large"
                     type="submit"
