@@ -12,7 +12,15 @@ type Mutation {
     largeImage: String
     currency: CURRENCY_CODES
   ): Item!
-  updateItem(id: ID!, title: String, description: String, price: Int): Item!
+  updateItem(
+    id: ID!
+    title: String
+    description: String
+    price: Float
+    image: String
+    largeImage: String
+    currency: CURRENCY_CODES
+  ): Item!
   deleteItem(id: ID!): Item
 }
 
