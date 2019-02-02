@@ -15,8 +15,12 @@ const Query = {
     console.log("exchange data ", data)
     return data
   },
-  files: () => {
-    // Return the record of files uploaded from your DB or API or filesystem.
+  file(parent, { id }, context, info) {
+    return context.db.query.file({ where: { id } }, info)
+  },
+
+  files(parent, args, context, info) {
+    return context.db.query.files(args, info)
   },
 }
 

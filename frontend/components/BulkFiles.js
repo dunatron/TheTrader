@@ -2,21 +2,15 @@ import React, { Component } from "react"
 import { Query } from "react-apollo"
 import gql from "graphql-tag"
 import styled from "styled-components"
-import ItemComponent from "./Item"
+import FileCard from "./FileCard"
 
-const ALL_ITEMS_QUERY = gql`
-  query ALL_ITEMS_QUERY {
-    items {
+const ALL_FILES_QUERY = gql`
+  query files {
+    files {
       id
-      title
-      price
-      description
-      image {
-        id
-        filename
-        url
-      }
-      currency
+      filename
+      url
+      createdAt
     }
   }
 `
@@ -25,7 +19,7 @@ const Center = styled.div`
   text-align: center;
 `
 
-const ItemsList = styled.div`
+const FilesList = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 60px;
@@ -38,22 +32,22 @@ const ItemsList = styled.div`
   }
 `
 
-export default class Items extends Component {
+export default class Files extends Component {
   render() {
     return (
       <Center>
-        <p>Items</p>
-        <Query query={ALL_ITEMS_QUERY}>
+        <p>[FILES]</p>
+        <Query query={ALL_FILES_QUERY}>
           {({ data, error, loading }) => {
             if (loading) return <p>loading</p>
             if (error) return <p>Error: {error.message}</p>
             console.log("Items data => ", data)
             return (
-              <ItemsList>
-                {data.items.map(item => (
-                  <ItemComponent item={item} key={item.id} />
+              <FilesList>
+                {data.files.map(file => (
+                  <FileCard file={file} />
                 ))}
-              </ItemsList>
+              </FilesList>
             )
           }}
         </Query>
@@ -62,4 +56,4 @@ export default class Items extends Component {
   }
 }
 
-export { ALL_ITEMS_QUERY }
+export { ALL_FILES_QUERY }

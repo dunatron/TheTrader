@@ -28,6 +28,12 @@ const Nav = () => (
     <NavButton color="primary" onClick={() => handleLink("/account")}>
       Account
     </NavButton>
+    <NavButton color="primary" onClick={() => handleLink("/files")}>
+      Files
+    </NavButton>
+    <NavButton color="primary" onClick={() => handleLink("/bulkfiles")}>
+      Bulk Upload
+    </NavButton>
   </NavStyles>
 )
 

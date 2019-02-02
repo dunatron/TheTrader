@@ -105,6 +105,18 @@ const Mutation = {
   async uploadFiles(parent, { files }, ctx, info) {
     return Promise.all(files.map(file => processUpload(file, ctx)))
   },
+  async renameFile(parent, { id, filename }, ctx, info) {
+    return ctx.db.mutation.updateFile({ data: { filename }, where: { id } }, info)
+  },
+  async deleteFile(parent, { id }, ctx, info) {
+    const file = await ctx.db.query.file({ where: { id } }, `{id url}`)
+    console.log("FOUND FILE ++++> ", file)
+    if (file) {
+      deleteFile({ id: file.id, url: file.url, ctx })
+    }
+    return { id }
+    // return await ctx.db.mutation.deleteFile({ where: { id } }, info)
+  },
 }
 
 module.exports = Mutation

@@ -102,7 +102,7 @@
 
 #### available currency codes
 
-```
+```js
 query currencyCodesEnum {
   __type(name: "CURRENCY_CODES") {
     name
@@ -115,13 +115,39 @@ query currencyCodesEnum {
 
 #### exchangeRates
 
-```
+```js
 query exchangeRates($baseCurrency:String!){
 	exchangeRates(baseCurrency:$baseCurrency)
 }
 // variables
 {
   "baseCurrency": "CAD"
+}
+```
+
+#### files
+
+```js
+query files {
+  files {
+    id
+    filename
+    url
+    createdAt
+  }
+}
+```
+
+### Mutations
+
+#### bulk upload files
+
+```js
+mutation uploadFiles($files:[Upload!]!) {
+  uploadFiles(files:$files) {
+    id
+    filename
+  }
 }
 ```
 

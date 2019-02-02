@@ -19,11 +19,14 @@ type Mutation {
   singleUpload(file: Upload!): File!
   uploadFile(file: Upload!): File!
   uploadFiles(files: [Upload!]!): [File!]!
+  deleteFile(id: ID!): File
+  renameFile(id: ID!, filename: String!): File
 }
 
 type Query {
   items: [Item]!
   item(where: ItemWhereUniqueInput!): Item
   exchangeRates(baseCurrency: String!): Json
-  files: [File]
+  file(id: ID!): File
+  files: [File!]!
 }
