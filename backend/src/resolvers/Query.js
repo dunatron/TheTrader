@@ -15,6 +15,9 @@ const Query = {
     console.log("exchange data ", data)
     return data
   },
+  files: () => {
+    // Return the record of files uploaded from your DB or API or filesystem.
+  },
 }
 
 module.exports = Query

@@ -1,17 +1,11 @@
 # import * from './generated/prisma.graphql'
+
 scalar Json
 scalar Float
+scalar Upload
 
 type Mutation {
-  createItem(
-    title: String
-    description: String
-    price: Float
-    # price: Int
-    image: String
-    largeImage: String
-    currency: CURRENCY_CODES
-  ): Item!
+  createItem(data: ItemCreateInput!, file: Upload): Item!
   updateItem(
     id: ID!
     title: String
@@ -22,10 +16,14 @@ type Mutation {
     currency: CURRENCY_CODES
   ): Item!
   deleteItem(id: ID!): Item
+  singleUpload(file: Upload!): File!
+  uploadFile(file: Upload!): File!
+  uploadFiles(files: [Upload!]!): [File!]!
 }
 
 type Query {
   items: [Item]!
   item(where: ItemWhereUniqueInput!): Item
   exchangeRates(baseCurrency: String!): Json
+  files: [File]
 }

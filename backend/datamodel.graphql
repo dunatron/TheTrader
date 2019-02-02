@@ -6,20 +6,23 @@ type User {
   sellingItems: [Item!]!
 }
 
-type MyTest {
+type File {
   id: ID! @unique
-  price: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  filename: String!
+  mimetype: String!
+  encoding: String!
+  url: String! @unique
 }
 
 type Item {
   id: ID! @unique
   title: String!
   description: String!
-  image: String
-  largeImage: String
+  image: File
   currency: CURRENCY_CODES! @default(value: "NZD")
   price: Float!
-  # price: Int!
   # createAt: DateTime!
   # updatedAt: DateTime!
   # user: User!

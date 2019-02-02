@@ -19,28 +19,34 @@ import FileUploader from "./FileUploader"
 // https://github.com/exchangeratesapi/exchangeratesapi
 var fx = require("money")
 
+// const CREATE_ITEM_MUTATION = gql`
+//   mutation CREATE_ITEM_MUTATION(
+//     $title: String!
+//     $description: String!
+//     $price: Float!
+//     $image: String
+//     $largeImage: String
+//     $currency: CURRENCY_CODES!
+//   ) {
+//     createItem(
+//       title: $title
+//       description: $description
+//       price: $price
+//       image: $image
+//       largeImage: $largeImage
+//       currency: $currency
+//     ) {
+//       id
+//     }
+//   }
+// `
 const CREATE_ITEM_MUTATION = gql`
-  mutation CREATE_ITEM_MUTATION(
-    $title: String!
-    $description: String!
-    $price: Float!
-    $image: String
-    $largeImage: String
-    $currency: CURRENCY_CODES!
-  ) {
-    createItem(
-      title: $title
-      description: $description
-      price: $price
-      image: $image
-      largeImage: $largeImage
-      currency: $currency
-    ) {
+  mutation CREATE_ITEM_MUTATION($data: ItemCreateInput!, $file: Upload) {
+    createItem(data: $data, file: $file) {
       id
     }
   }
 `
-
 const Title = styled.h2`
   font-size: 2.5rem;
   color: ${p => p.theme.palette.primary.main};
@@ -105,30 +111,55 @@ class CreateItem extends Component {
     return pounds
   }
 
+  // submitForm = async (e, createItem) => {
+  //   e.preventDefault()
+  //   alert("Form submission")
+  //   // call the mutation
+  //   await this.uploadFile()
+  //   const res = await createItem()
+  //   // change them to the single item page
+  //   console.log(res)
+  //   Router.push({
+  //     pathname: "/item",
+  //     query: { id: res.data.createItem.id },
+  //   })
+  // }
+
+  // _getQueryVariables = () => {
+  //   const data = {
+  //     title: this.state.title,
+  //     description: this.state.description,
+  //     price: parseFloat(this.state.price),
+  //     image: this.state.image,
+  //     largeImage: this.state.largeImage,
+  //     currency: this.state.currency,
+  //   }
+  //   const file =
+  //   return { ...data }
+  // }
+
   submitForm = async (e, createItem) => {
     e.preventDefault()
     alert("Form submission")
     // call the mutation
-    await this.uploadFile()
-    const res = await createItem()
+    // await this.uploadFile()
+    const res = await createItem({
+      variables: {
+        data: {
+          title: this.state.title,
+          description: this.state.description,
+          price: this.state.price,
+          currency: this.state.currency,
+        },
+        file: this.state.file.rawFile,
+      },
+    })
     // change them to the single item page
     console.log(res)
     Router.push({
       pathname: "/item",
       query: { id: res.data.createItem.id },
     })
-  }
-
-  _getQueryVariables = () => {
-    const data = {
-      title: this.state.title,
-      description: this.state.description,
-      price: parseFloat(this.state.price),
-      image: this.state.image,
-      largeImage: this.state.largeImage,
-      currency: this.state.currency,
-    }
-    return { ...data }
   }
 
   render() {
@@ -146,9 +177,7 @@ class CreateItem extends Component {
           title={<Title>Sell an Item</Title>}
         />
         <CardContent style={{ paddingTop: 0 }}>
-          <Mutation
-            mutation={CREATE_ITEM_MUTATION}
-            variables={this._getQueryVariables()}>
+          <Mutation mutation={CREATE_ITEM_MUTATION}>
             {(createItem, { loading, error }) => (
               <Form
                 data-test="form"

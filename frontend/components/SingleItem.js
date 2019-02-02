@@ -30,7 +30,16 @@ const SINGLE_ITEM_QUERY = gql`
       id
       title
       description
-      largeImage
+      image {
+        id
+        createdAt
+        updatedAt
+        filename
+        mimetype
+        encoding
+        url
+      }
+      # largeImage
     }
   }
 `
@@ -52,7 +61,7 @@ class SingleItem extends Component {
               <Head>
                 <title>Sick Fits | {item.title}</title>
               </Head>
-              <img src={item.largeImage} alt={item.title} />
+              {/* <img src={item.largeImage} alt={item.title} /> */}
               <div className="details">
                 <h2>Viewing {item.title}</h2>
                 <p>{item.description}</p>
