@@ -221,3 +221,11 @@ PORT=4444
 - money.js
   - Simple and tiny JavaScript library for realtime currency conversion and exchange rate calculation, from any currency, to any currency.
   - Now maintained by Open Exchange Rates
+
+## File Types API
+
+- files have a stupid amount of extensions which resolve to a Mime type.
+  - We can easily narrow down the types we need by creating a HOC for fil extensions and our own resolvers
+  - i.e when we upload a file it will have a random extension but predictable mimetype.
+  - we can therefore specify our own extensions which will resolve to a mimetype that we can check for any uploaded file.
+  - If we need to be more specific we can parse in the specific extensions

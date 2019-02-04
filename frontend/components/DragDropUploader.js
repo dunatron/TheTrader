@@ -6,6 +6,8 @@ import classNames from "classnames"
 import Button from "@material-ui/core/Button"
 import CloudUploadIcon from "@material-ui/icons/CloudUpload"
 
+import fileTypesGen from "../lib/fileTypeGen"
+
 const styles = theme => ({
   root: {
     border: `1px solid pink`,
@@ -23,6 +25,7 @@ class DragDropUploader extends Component {
   render = () => {
     const { classes, title } = this.props
     const { dragging } = this.state
+
     return (
       <div
         onClick={this.onZoneClick}
@@ -46,8 +49,27 @@ class DragDropUploader extends Component {
     )
   }
 
+  allowedExtensions = () => {
+    const { types, extensions } = this.props
+    const allowed = fileTypesGen(
+      types ? types : undefined,
+      extensions ? extensions : undefined
+    )
+    return allowed
+  }
+
   handleFiles = files => {
-    this.props.uploadFiles(files)
+    const allowedExtensions = this.allowedExtensions()
+    console.log("Handle File allowedExtensions => ", allowedExtensions)
+    const allowedFiles = Object.values(files)
+      .map(file => file)
+      // .filter(f => allowedExtensions.includes(f.type))
+      .filter(f => {
+        console.log("The file Type => ", f.type)
+        return allowedExtensions.includes(f.type)
+      })
+    this.props.uploadFiles(allowedFiles)
+    // return allowedFiles
   }
 
   onFileChange = e => {

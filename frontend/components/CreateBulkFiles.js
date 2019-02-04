@@ -96,7 +96,13 @@ class CreateItem extends Component {
                 <FieldSet
                   disabled={loading || uploading}
                   aria-busy={loading || uploading}>
-                  <DragDropUploader uploadFiles={files =>{console.log("Files recieved from component", files)}} />
+                  <DragDropUploader
+                    types={["image"]}
+                    extensions={[".jpg", ".png"]}
+                    uploadFiles={files => {
+                      console.log("Files recieved from component", files)
+                    }}
+                  />
                   <FileUploader
                     processData={fileData => this.setFileInState(fileData)}
                   />
