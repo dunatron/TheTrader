@@ -16,6 +16,7 @@ import CurrencyCodesSelect from "./SelectCurrencyCode"
 import Button from "./styles/Button"
 import Error from "./ErrorMessage"
 import FileUploader from "./FileUploader"
+import DragDropUploader from "./DragDropUploader"
 
 const CREATE_BULK_FILES_MUTATION = gql`
   mutation uploadFiles($files: [Upload!]!) {
@@ -95,6 +96,7 @@ class CreateItem extends Component {
                 <FieldSet
                   disabled={loading || uploading}
                   aria-busy={loading || uploading}>
+                  <DragDropUploader uploadFiles={files =>{console.log("Files recieved from component", files)}} />
                   <FileUploader
                     processData={fileData => this.setFileInState(fileData)}
                   />
