@@ -5,6 +5,7 @@ import withStyles from "@material-ui/core/styles/withStyles"
 import classNames from "classnames"
 import Button from "@material-ui/core/Button"
 import CloudUploadIcon from "@material-ui/icons/CloudUpload"
+import fileTypesGen from "../lib/fileTypeGen"
 
 const styles = theme => ({
   dropZone: {
@@ -41,6 +42,20 @@ const styles = theme => ({
     margin: theme.spacing.unit,
   },
 })
+
+const readFileIntoMemory = (file, callback) => {
+  var reader = new FileReader()
+  reader.onload = function() {
+    callback({
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      content: new Uint8Array(this.result),
+      raw: file,
+    })
+  }
+  reader.readAsArrayBuffer(file)
+}
 
 class DnDFileReader extends Component {
   constructor(props) {
@@ -288,7 +303,39 @@ class DnDFileReader extends Component {
 
   extractSingleFile = files => {
     this.setState({ stage: 1 })
+
     return files[0]
+  }
+
+  extractFiles = files => {
+    this.setState({ stage: 1 })
+
+    return files
+  }
+
+  allowedExtensions = () => {
+    const { types, extensions } = this.props
+    const allowed = fileTypesGen(
+      types ? types : undefined,
+      extensions ? extensions : undefined
+    )
+    return allowed
+  }
+
+  handleFiles = async files => {
+    const allowedExtensions = this.allowedExtensions()
+    const allowedFiles = Object.values(files)
+      .map(file => file)
+      .filter(f => allowedExtensions.includes(f.type))
+    allowedFiles.map(file => readFileIntoMemory(file, this.processedFile))
+    // this.setState({ processing: false })
+  }
+
+  processedFile = fileInfo => {
+    const { receiveFile } = this.props
+
+    receiveFile(fileInfo)
+    this.setState({ stage: 0 })
   }
 
   onDrop = e => {
@@ -297,9 +344,12 @@ class DnDFileReader extends Component {
     this.setState({
       dragStatus: "",
     })
-    let file = this.extractSingleFile(e.dataTransfer.files)
+    const files = this.extractFiles(e.dataTransfer.files)
+    this.handleFiles(files)
 
-    this.processFile(file)
+    // let file = this.extractSingleFile(e.dataTransfer.files)
+
+    // this.processFile(file)
   }
 
   onDragEnter = e => {

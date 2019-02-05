@@ -59,7 +59,7 @@ const imageFiles = [
     __type: "image",
   },
   {
-    extension: ".icon",
+    extension: ".ico",
     mime: "image/vnd.microsoft.icon",
     documentKind: "Windows icon",
     __type: "image",

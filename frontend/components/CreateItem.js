@@ -16,6 +16,8 @@ import CurrencyCodesSelect from "./SelectCurrencyCode"
 import Button from "./styles/Button"
 import Error from "./ErrorMessage"
 import FileUploader from "./FileUploader"
+import DragDropUploader from "./DragDropUploader"
+import encodeImage from "../lib/encodeImage"
 // https://github.com/exchangeratesapi/exchangeratesapi
 var fx = require("money")
 
@@ -51,8 +53,13 @@ const Title = styled.h2`
   font-size: 2.5rem;
   color: ${p => p.theme.palette.primary.main};
 `
-
+// Note this Image is being rendered again everytime. Stopit from doing this I guess
+const renderFileImage = file => {
+  const src = "data:image/png;base64," + encodeImage(file.content)
+  return <CardMedia component="img" src={src} image={src} title={file.name} />
+}
 class CreateItem extends Component {
+  file = null
   state = {
     title: "",
     description: "",
@@ -64,6 +71,16 @@ class CreateItem extends Component {
     uploading: false,
   }
 
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   // if (this.props.title !== nextProps.color) {
+  //   //   return true
+  //   // }
+  //   if (this.state.title !== nextState.title) {
+  //     return true
+  //   }
+  //   return false
+  // }
+
   handleChange = e => {
     const { name, type, value } = e.target
     const val = type === "number" ? parseFloat(value) : value
@@ -71,9 +88,9 @@ class CreateItem extends Component {
       [name]: val,
     })
   }
-  setFileInState = d => {
+  setFileInState = file => {
     this.setState({
-      file: d,
+      file: file,
     })
   }
   uploadFile = async e => {
@@ -111,33 +128,6 @@ class CreateItem extends Component {
     return pounds
   }
 
-  // submitForm = async (e, createItem) => {
-  //   e.preventDefault()
-  //   alert("Form submission")
-  //   // call the mutation
-  //   await this.uploadFile()
-  //   const res = await createItem()
-  //   // change them to the single item page
-  //   console.log(res)
-  //   Router.push({
-  //     pathname: "/item",
-  //     query: { id: res.data.createItem.id },
-  //   })
-  // }
-
-  // _getQueryVariables = () => {
-  //   const data = {
-  //     title: this.state.title,
-  //     description: this.state.description,
-  //     price: parseFloat(this.state.price),
-  //     image: this.state.image,
-  //     largeImage: this.state.largeImage,
-  //     currency: this.state.currency,
-  //   }
-  //   const file =
-  //   return { ...data }
-  // }
-
   submitForm = async (e, createItem) => {
     e.preventDefault()
     alert("Form submission")
@@ -151,11 +141,10 @@ class CreateItem extends Component {
           price: this.state.price,
           currency: this.state.currency,
         },
-        file: this.state.file.rawFile,
+        file: this.state.file.raw,
       },
     })
     // change them to the single item page
-    console.log(res)
     Router.push({
       pathname: "/item",
       query: { id: res.data.createItem.id },
@@ -163,8 +152,8 @@ class CreateItem extends Component {
   }
 
   render() {
-    console.log("this.state ", this.state)
     const { uploading } = this.state
+    console.log(this.state)
     return (
       <Card raised={true} theme={{ maxWidth: 350 }}>
         <CardHeader
@@ -215,17 +204,25 @@ class CreateItem extends Component {
                       shrink: true,
                     }}
                   />
-                  <FileUploader
-                    processData={fileData => this.setFileInState(fileData)}
+                  <DragDropUploader
+                    disabled={loading}
+                    types={["image"]}
+                    extensions={[".jpg", ".png"]}
+                    receiveFile={file => this.setFileInState(file)}
                   />
-                  {this.state.file && (
+                  {/* <FileUploader
+                    processData={fileData => this.setFileInState(fileData)}
+                    const src = "data:image/png;base64," + encodeImage(file.content)
+                  /> */}
+                  {this.state.file && renderFileImage(this.state.file)}
+                  {/* {this.state.file && (
                     <CardMedia
                       component="img"
                       src={this.state.file.data}
                       image={this.state.file.data}
                       title={this.state.file.name}
                     />
-                  )}
+                  )} */}
                   <Button
                     size="large"
                     type="submit"

@@ -1,22 +1,19 @@
 import React, { Component } from "react"
 import { Mutation } from "react-apollo"
 import CardHeader from "@material-ui/core/CardHeader"
-import CardMedia from "@material-ui/core/CardMedia"
 import CardContent from "@material-ui/core/CardContent"
 import gql from "graphql-tag"
-import Router from "next/router"
 import styled from "styled-components"
 import MoneyIcon from "@material-ui/icons/AttachMoney"
 import AvatarStyles from "./styles/AvatarStyles"
-import TextInput from "./styles/input/TextInput"
 import Card from "./styles/Card"
 import Form from "./styles/Form"
 import FieldSet from "./styles/FieldSet"
-import CurrencyCodesSelect from "./SelectCurrencyCode"
 import Button from "./styles/Button"
 import Error from "./ErrorMessage"
-import FileUploader from "./FileUploader"
 import DragDropUploader from "./DragDropUploader"
+import ImageGridList from "./ImageGridList"
+import encodeImage from "../lib/encodeImage"
 
 const CREATE_BULK_FILES_MUTATION = gql`
   mutation uploadFiles($files: [Upload!]!) {
@@ -29,6 +26,19 @@ const CREATE_BULK_FILES_MUTATION = gql`
 const Title = styled.h2`
   font-size: 2.5rem;
   color: ${p => p.theme.palette.primary.main};
+`
+
+const CardsWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  .card {
+    margin: 8px;
+  }
+`
+
+const ImageList = styled.div`
+  display: flex;
 `
 
 class CreateItem extends Component {
@@ -57,7 +67,7 @@ class CreateItem extends Component {
     alert("Form submission")
     // call the mutation
     // await this.uploadFile()
-    const theFiles = this.state.files.map(file => file.rawFile)
+    const theFiles = this.state.files.map(file => file.raw)
     console.log("theFiles => ", theFiles)
     const res = await uploadFiles({
       variables: {
@@ -72,64 +82,83 @@ class CreateItem extends Component {
     // })
   }
 
+  getRandomInt = max => {
+    return Math.floor(Math.random() * Math.floor(max))
+  }
+
+  getNextGridSize = index => {
+    if (index & 1) {
+      console.log("Is an odd number ", index)
+      return 2
+    } else return 3
+  }
+
   render() {
     console.log("this.state ", this.state)
     const { uploading } = this.state
     return (
-      <Card raised={true} theme={{ maxWidth: 350 }}>
-        <CardHeader
-          style={{ paddingBottom: 0 }}
-          avatar={
-            <AvatarStyles aria-label="Sell">
-              <MoneyIcon />
-            </AvatarStyles>
-          }
-          title={<Title>UPLOAD FILES</Title>}
-        />
-        <CardContent style={{ paddingTop: 0 }}>
-          <Mutation mutation={CREATE_BULK_FILES_MUTATION}>
-            {(uploadFiles, { loading, error }) => (
-              <Form
-                data-test="form"
-                onSubmit={e => this.submitForm(e, uploadFiles)}>
-                <Error error={error} />
-                <FieldSet
-                  disabled={loading || uploading}
-                  aria-busy={loading || uploading}>
-                  <DragDropUploader
-                    types={["image"]}
-                    extensions={[".jpg", ".png"]}
-                    uploadFiles={files => {
-                      console.log("Files recieved from component", files)
-                    }}
-                  />
-                  <FileUploader
-                    processData={fileData => this.setFileInState(fileData)}
-                  />
-                  {this.state.files.map((file, index) => {
-                    return (
-                      <CardMedia
-                        component="img"
-                        src={file.data}
-                        image={file.data}
-                        title={file.name}
-                      />
-                    )
-                  })}
-                  <Button
-                    size="large"
-                    type="submit"
-                    component="button"
-                    variant="contained"
-                    color="primary">
-                    Submit
-                  </Button>
-                </FieldSet>
-              </Form>
-            )}
-          </Mutation>
-        </CardContent>
-      </Card>
+      <CardsWrapper>
+        <Card className="card" raised={true}>
+          <CardHeader
+            style={{ paddingBottom: 0 }}
+            avatar={
+              <AvatarStyles aria-label="Sell">
+                <MoneyIcon />
+              </AvatarStyles>
+            }
+            title={<Title>UPLOAD FILES</Title>}
+          />
+          <CardContent style={{ paddingTop: 0 }}>
+            <Mutation mutation={CREATE_BULK_FILES_MUTATION}>
+              {(uploadFiles, { loading, error }) => (
+                <Form
+                  data-test="form"
+                  onSubmit={e => this.submitForm(e, uploadFiles)}>
+                  <Error error={error} />
+                  <FieldSet
+                    disabled={loading || uploading}
+                    aria-busy={loading || uploading}>
+                    <DragDropUploader
+                      disabled={loading}
+                      types={["image"]}
+                      extensions={[".jpg", ".png"]}
+                      receiveFile={file => {
+                        console.log("received File => ", file)
+                        this.setFileInState(file)
+                      }}
+                    />
+
+                    <Button
+                      disabled={loading}
+                      size="large"
+                      type="submit"
+                      component="button"
+                      variant="contained"
+                      color="primary">
+                      Submit
+                    </Button>
+                  </FieldSet>
+                </Form>
+              )}
+            </Mutation>
+          </CardContent>
+        </Card>
+        {this.state.files.length >= 1 && (
+          <Card className="card" raised={true}>
+            <ImageGridList
+              tileData={this.state.files.map((file, idx) => {
+                const src = "data:image/png;base64," + encodeImage(file.content)
+                return {
+                  src,
+                  name: file.name,
+                  // cols: this.getRandomInt(3),
+                  cols: this.getNextGridSize(idx),
+                }
+              })}
+            />
+          </Card>
+        )}
+      </CardsWrapper>
     )
   }
 }
