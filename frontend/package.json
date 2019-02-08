@@ -29,6 +29,7 @@
     "fetch": "^1.1.0",
     "graphql": "^14.0.2",
     "graphql-tag": "^2.9.2",
+    "gsap": "^2.0.2",
     "lodash.debounce": "^4.0.8",
     "money": "^0.2.0",
     "next": "^7.0.0",
@@ -42,6 +43,7 @@
     "react-dropzone": "^8.0.4",
     "react-stripe-checkout": "^2.6.3",
     "react-transition-group": "^2.5.0",
+    "react-transition-group-v2": "^2.4.0",
     "styled-components": "^3.4.9",
     "waait": "^1.0.2"
   },

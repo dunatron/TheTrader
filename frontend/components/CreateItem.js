@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, { Component, PureComponent } from "react"
 import { Mutation } from "react-apollo"
 import CardHeader from "@material-ui/core/CardHeader"
 import CardMedia from "@material-ui/core/CardMedia"
@@ -54,10 +54,28 @@ const Title = styled.h2`
   color: ${p => p.theme.palette.primary.main};
 `
 // Note this Image is being rendered again everytime. Stopit from doing this I guess
-const renderFileImage = file => {
+// const renderFileImage = file => {
+//   const src = "data:image/png;base64," + encodeImage(file.content)
+//   return <CardMedia component="img" src={src} image={src} title={file.name} />
+// }
+
+const RenderFileImage = file => {
   const src = "data:image/png;base64," + encodeImage(file.content)
   return <CardMedia component="img" src={src} image={src} title={file.name} />
 }
+
+const ImageComponent = React.memo(function ImageComponent(props) {
+  /* render using props */
+  const file = props.image
+  const src = "data:image/png;base64," + encodeImage(file.content)
+  return (
+    <div>
+      <h1>I am Image Pur memo</h1>
+      <CardMedia component="img" src={src} image={src} title={file.name} />
+    </div>
+  )
+})
+
 class CreateItem extends Component {
   file = null
   state = {
@@ -214,7 +232,10 @@ class CreateItem extends Component {
                     processData={fileData => this.setFileInState(fileData)}
                     const src = "data:image/png;base64," + encodeImage(file.content)
                   /> */}
-                  {this.state.file && renderFileImage(this.state.file)}
+                  {this.state.file && (
+                    <ImageComponent image={this.state.file} />
+                  )}
+                  {/* {this.state.file && renderFileImage(this.state.file)} */}
                   {/* {this.state.file && (
                     <CardMedia
                       component="img"

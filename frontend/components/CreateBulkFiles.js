@@ -120,6 +120,7 @@ class CreateItem extends Component {
                     aria-busy={loading || uploading}>
                     <DragDropUploader
                       disabled={loading}
+                      multiple={true}
                       types={["image"]}
                       extensions={[".jpg", ".png"]}
                       receiveFile={file => {
