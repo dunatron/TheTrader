@@ -13,6 +13,9 @@ const handleLink = (route = "/", query = {}) => {
 
 const Nav = () => (
   <NavStyles>
+    <NavButton color="secondary" onClick={() => handleLink("/polysearch")}>
+      Poly Search
+    </NavButton>
     <NavButton color="secondary" onClick={() => handleLink("/items")}>
       Shop
     </NavButton>

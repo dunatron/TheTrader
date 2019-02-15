@@ -1,6 +1,6 @@
 const { forwardTo } = require("prisma-binding")
 const { createWriteStream } = require("fs")
-const { processUpload, deleteFile } = require("../modules/fileApi")
+const { processUpload, deleteFile } = require("../lib/fileApi")
 
 const storeUpload = ({ stream, filename }) =>
   new Promise((resolve, reject) =>

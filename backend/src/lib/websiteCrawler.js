@@ -4,11 +4,10 @@ var fs = require("fs")
 
 let already_crawled = []
 const crawled_data = []
-const crawlableDomains = ["www.op.ac.nz"]
-const excludePathExtensions = [".jpg", ".png", ".jpeg"]
+const crawlableDomains = []
+const excludePathExtensions = [".jpg", ".png", ".jpeg", ".pdf"]
 
 const stitchTogetherDirectory = urlBits => {
-  // console.log("+++++++++++++STictching+++++++++++++++")
   urlBits.splice(0, 3)
   var newPathname = ""
   for (i = 0; i < urlBits.length; i++) {
@@ -18,80 +17,77 @@ const stitchTogetherDirectory = urlBits => {
   return newPathname
 }
 
+const storeScrapedContent = jsonArr => {
+  fs.writeFile("cronjob-files/pages.json", JSON.stringify(jsonArr), function(
+    err
+  ) {
+    if (err) throw err
+    // console.log("file write complete")
+  })
+}
+
 const crawlPage = (error, res, done) => {
   if (error) {
-    console.log("TRON SAYS CHECK THIS ERROR")
     console.log(error)
   }
   const {
-    options: { uri },
+    options: { uri, jQuery },
   } = res
   // console.log("LINK BEING PROCESSED => ", uri)
-  console.log("LINK BEING PROCESSED => ", uri)
+  // warn: CRAWLER response body is not HTML
+  // ToDo: need to figure out from the res if it is not valid html then done() early to exit
   try {
-    var $ = res.$
-    const siteLinks = $("a")
+    const $ = res.$
     const ulrBits = uri.split("/")
-    // if (uri === "https://www.op.ac.nz//accessibility") {
-    //   // console.log(" I needa Know => ", res)
-    //   const siteHtml = $.html()
-    //   // console.log("siteHtml => ", siteHtml)
-    //   // console.log("siteLinks => ", siteLinks)
-    //   $(siteLinks).each(function(i, link) {
-    //     var l = $(link).attr("href")
-    //     console.log(l)
-    //   })
-    // }
-
-    // $ is Cheerio by default
-    // a lean implementation of core jQuery designed specifically for the server
-
-    var c = new Crawler({
-      // rateLimit: 2000,
-      // rateLimit: 10000, // `maxConnections` will be forced to 1
-      rateLimit: 5000, // increate for error: ESOCKETTIMEDOUT
-      // rateLimit: 100, // increate for error: ESOCKETTIMEDOUT
-      // maxConnections: 10,
+    const pageTitle = $("title").text()
+    const metas = $("meta")
+    const siteLinks = $("a")
+    // new crawler to queue links found on scrapped page
+    const c = new Crawler({
+      rateLimit: 3000, // increase for error: ESOCKETTIMEDOUT
       // This will be called for each crawled page
       callback: crawlPage,
     })
 
-    const pageTitle = $("title").text()
-    const metas = $("meta")
+    c.on("drain", function() {
+      // console.log("PAGE DRAINED => ", uri)
+      // store scraped page content in file
+      storeScrapedContent(crawled_data)
+      // console.log("P. QUEUE SIZE = > ", c.queueSize)
+    })
+
     let description = ""
     let keywords = ""
 
-    try {
-      $(metas).each(function(i, meta) {
-        console.log($(meta).attr("href"))
-        let metaName = $(meta).attr("name")
-        if (metaName) {
-          metaName = metaName.toLowerCase()
-        }
-        if (metaName === "description") {
-          // console.log("FOUND THE META NAME desription => ", metaName)
-          description = $(meta).attr("content")
-        }
-        if (metaName === "keywords") {
-          // console.log("FOUND THE META NAME desription => ", metaName)
-          keywords = $(meta).attr("content")
-        }
-      })
-    } catch (e) {}
+    $(metas).each(function(i, meta) {
+      let metaName = $(meta).attr("name")
+      if (metaName) {
+        metaName = metaName.toLowerCase()
+      }
+      if (metaName === "description") {
+        // console.log("FOUND THE META NAME desription => ", metaName)
+        description = $(meta).attr("content")
+      }
+      if (metaName === "keywords") {
+        // console.log("FOUND THE META NAME desription => ", metaName)
+        keywords = $(meta).attr("content")
+      }
+    })
 
+    // add scrapped data to our crawled_data array
     crawled_data.push({
       title: pageTitle,
       url: uri,
       description: description,
       keywords: keywords,
     })
-    console.log("crawled_data => ", crawled_data)
 
     // url info
     const protocol = ulrBits[0]
     const host = ulrBits[2]
     const directory = stitchTogetherDirectory(ulrBits)
-    // store content for siteLinks
+    // loop over "a" tags and construct links to crawl
+    // ToDo: gather links and put in array. then when drained add another to the queue
     $(siteLinks).each(function(i, link) {
       var linkName = $(link).text()
       var l = $(link).attr("href")
@@ -113,15 +109,22 @@ const crawlPage = (error, res, done) => {
         const linkHost = linkBits[2]
         if (crawlableDomains.includes(linkHost) && isLinkCrawlable(pathLink)) {
           try {
-            c.queue(pathLink)
+            c.queue({ uri: pathLink, jQuery: true })
+            // console.log("P. QUEUE SIZE = > ", c.queueSize)
           } catch (e) {
             console.log(e)
           }
         }
       }
-      done()
+      // done()
     })
-  } catch (e) {}
+
+    // done()
+  } catch (e) {
+    // console.log(e)
+  } finally {
+    done()
+  }
 }
 
 const isLinkCrawlable = linkName => {
@@ -172,33 +175,35 @@ const buildLinkPath = (l, uri, protocol, host, directory) => {
   return fullPath
 }
 
-const crawlWebsites = () => {
-  // var c = new Crawler({
-  //   maxConnections: 100,
-  //   // This will be called for each crawled page
-  //   callback: crawlPage,
-  // })
+const tronCrawler = (urls, domains) => {
+  already_crawled = []
+
+  for (domain of domains) {
+    crawlableDomains.push(domain)
+  }
+
   var c = new Crawler({
     // maxConnections: 100,
-    rateLimit: 10000, // `maxConnections` will be forced to 1
+    // rateLimit: 10000, // `maxConnections` will be forced to 1
+    rateLimit: 2000, // `maxConnections` will be forced to 1
     // This will be called for each crawled page
     callback: crawlPage,
   })
-  // c.queue("http://localhost:7777/items")
-  // c.queue("https://www.op.ac.nz//site-map")
-  // c.queue("http://localhost:3000")
-  c.queue("https://www.op.ac.nz")
 
-  // c.queue("https://central.op.ac.nz/study/cookery/")
+  c.on("schedule", function(options) {
+    already_crawled.push(options.uri)
+  })
 
-  // c.queue("https://www.op.ac.nz/about-us")
-  // c.queue("https://www.op.ac.nz/accessibility/")
-  // c.queue("https://www.amazon.com/")
+  c.on("drain", function() {
+    storeScrapedContent(crawled_data)
+    // console.log("SITE QUEUE SIZE = > ", c.queueSize)
+  })
+
+  for (url of urls) {
+    c.queue(url)
+  }
+  // console.log("SITE QUEUE SIZE = > ", c.queueSize)
 }
 
-const TronsCrawler = () => {
-  already_crawled = []
-  crawlWebsites()
-}
-
-module.exports = { TronsCrawler }
+// https://medium.freecodecamp.org/the-ultimate-guide-to-web-scraping-with-node-js-daa2027dcd3
+module.exports = { tronCrawler }

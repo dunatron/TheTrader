@@ -1,5 +1,5 @@
 const cloudinary = require("cloudinary").v2
-const { extractFileKey } = require("../lib/extractFileKey")
+const { extractFileKey } = require("./extractFileKey")
 
 const cloudinaryConfObj = {
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

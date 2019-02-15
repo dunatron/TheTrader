@@ -2,22 +2,26 @@ require("dotenv").config({ path: "./variables.env" })
 const createServer = require("./createServer")
 const db = require("./db")
 const { runAllJobs } = require("./cronjobs")
-const { TronsCrawler } = require("./lib/websiteCrawler")
+const { tronCrawler } = require("./lib/websiteCrawler")
 
 runAllJobs()
-TronsCrawler()
+const sitesToCrawl = ["https://www.op.ac.nz"]
+const crawlableDomains = ["www.op.ac.nz", "central.op.ac.nz"]
+tronCrawler(sitesToCrawl, crawlableDomains)
 
 const server = createServer()
 
-var myLogger = function(req, res, next) {
-  console.log("LOGGED")
+const expressLogger = function(req, res, next) {
+  console.log("express endpoint called")
   next()
 }
 
-server.use(myLogger)
+server.use(expressLogger)
 
-server.get("/hello", function(req, res) {
-  res.send("Hello World!")
+server.get("/tron-search", function(req, res) {
+  var foo = require("../test-input.json")
+  // res.send("Hello World!")
+  res.send(foo)
 })
 
 server.start(

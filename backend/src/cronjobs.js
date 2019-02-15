@@ -2,7 +2,7 @@
 const db = require("./db")
 // library
 const { createDirectory } = require("./lib/createDirectory")
-const { TronsCrawler } = require("./lib/websiteCrawler")
+const { tronCrawler } = require("./lib/websiteCrawler")
 
 // cronjob manager
 const scheduler = require("node-schedule")
@@ -16,19 +16,22 @@ rule.minute = null
 createDirectory("cronjob-files")
 
 // create cronjob functions
-const generateSearchFromWebsiteCall = async () => {
+const scrapeSites = async () => {
   rule.dayOfWeek = [0, new scheduler.Range(0, 6)]
-  rule.hour = null
-  rule.minute = null
+  // rule.hour = 4
+  // rule.minute = 20
+  rule.hour = 5
+  rule.minute = 20
   scheduler.scheduleJob(rule, function() {
-    console.log("Today is recognized by Tron!")
-    // TronsCrawler()
+    const sitesToCrawl = ["https://www.op.ac.nz"]
+    const crawlableDomains = ["www.op.ac.nz", "central.op.ac.nz"]
+    tronCrawler(sitesToCrawl, crawlableDomains)
   })
 }
 
 // function to easily run all cron jobs
 const runAllJobs = () => {
-  generateSearchFromWebsiteCall()
+  scrapeSites()
 }
 
 module.exports = { runAllJobs }
