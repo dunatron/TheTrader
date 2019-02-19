@@ -18,10 +18,10 @@ createDirectory("cronjob-files")
 // create cronjob functions
 const scrapeSites = async () => {
   rule.dayOfWeek = [0, new scheduler.Range(0, 6)]
-  // rule.hour = 4
-  // rule.minute = 20
-  rule.hour = 6
-  rule.minute = 40
+  rule.hour = 4
+  rule.minute = 20
+  // rule.hour = 7
+  // rule.minute = 10
   scheduler.scheduleJob(rule, function() {
     const sitesToCrawl = ["https://www.op.ac.nz"]
     const crawlableDomains = ["www.op.ac.nz", "central.op.ac.nz"]

@@ -12,9 +12,6 @@ import NoSsr from "@material-ui/core/NoSsr"
 import muiTheme from "./styles/_muiTheme"
 
 const theme = createMuiTheme(muiTheme)
-// const theme = createMuiTheme()
-
-console.log("Theme => ", JSON.stringify(theme))
 
 const StyledPage = styled.div`
   background: white;

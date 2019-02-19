@@ -3,6 +3,7 @@ const path = require("path")
 var fs = require("fs")
 
 let already_crawled = []
+let pageId = 1
 const crawled_data = []
 const crawlableDomains = []
 const excludePathExtensions = [".jpg", ".png", ".jpeg", ".pdf"]
@@ -33,6 +34,7 @@ const crawlPage = (error, res, done) => {
   const {
     options: { uri, jQuery },
   } = res
+  pageId++
   // console.log("LINK BEING PROCESSED => ", uri)
   // warn: CRAWLER response body is not HTML
   // ToDo: need to figure out from the res if it is not valid html then done() early to exit
@@ -44,7 +46,7 @@ const crawlPage = (error, res, done) => {
     const siteLinks = $("a")
     // new crawler to queue links found on scrapped page
     const c = new Crawler({
-      rateLimit: 3000, // increase for error: ESOCKETTIMEDOUT
+      rateLimit: 5000, // increase for error: ESOCKETTIMEDOUT
       // This will be called for each crawled page
       callback: crawlPage,
     })
@@ -73,13 +75,19 @@ const crawlPage = (error, res, done) => {
         keywords = $(meta).attr("content")
       }
     })
+    // get page content from tags
+    const mainContent = getContentFromTags($, ["h1", "h2", "h3", "h4"])
+    const secondaryContent = getContentFromTags($, ["p"])
 
     // add scrapped data to our crawled_data array
     crawled_data.push({
+      id: pageId,
       title: pageTitle,
       url: uri,
       description: description,
       keywords: keywords,
+      mainContent: mainContent,
+      secondaryContent: secondaryContent,
     })
 
     // url info
@@ -92,13 +100,11 @@ const crawlPage = (error, res, done) => {
       var linkName = $(link).text()
       var l = $(link).attr("href")
       var pathLink = ""
-
       if (l) {
         pathLink = buildLinkPath(l, uri, protocol, host, directory)
       }
       pathLink.trim()
       linkName.trim()
-
       if (
         pathLink !== "" &&
         !already_crawled.includes(pathLink) &&
@@ -110,21 +116,31 @@ const crawlPage = (error, res, done) => {
         if (crawlableDomains.includes(linkHost) && isLinkCrawlable(pathLink)) {
           try {
             c.queue({ uri: pathLink, jQuery: true })
-            // console.log("P. QUEUE SIZE = > ", c.queueSize)
           } catch (e) {
             console.log(e)
           }
         }
       }
-      // done()
     })
-
-    // done()
   } catch (e) {
     // console.log(e)
   } finally {
     done()
   }
+}
+
+const getContentFromTags = ($, tagTypes) => {
+  let content = ""
+  for (type of tagTypes) {
+    const tags = $(`${type}`)
+    $(tags).each((i, tag) => {
+      var tagContent = $(tag).text()
+      tagContent.replace(/[^a-zA-Z ]/g, "")
+      tagContent.trim()
+      content = content + ` ${tagContent}`
+    })
+  }
+  return content
 }
 
 const isLinkCrawlable = linkName => {
@@ -185,7 +201,7 @@ const tronCrawler = (urls, domains) => {
   var c = new Crawler({
     // maxConnections: 100,
     // rateLimit: 10000, // `maxConnections` will be forced to 1
-    rateLimit: 2000, // `maxConnections` will be forced to 1
+    rateLimit: 5000, // `maxConnections` will be forced to 1
     // This will be called for each crawled page
     callback: crawlPage,
   })
@@ -206,4 +222,5 @@ const tronCrawler = (urls, domains) => {
 }
 
 // https://medium.freecodecamp.org/the-ultimate-guide-to-web-scraping-with-node-js-daa2027dcd3
+// https://github.com/bda-research/node-crawler
 module.exports = { tronCrawler }

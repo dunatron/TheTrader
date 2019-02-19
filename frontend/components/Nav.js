@@ -16,6 +16,9 @@ const Nav = () => (
     <NavButton color="secondary" onClick={() => handleLink("/polysearch")}>
       Poly Search
     </NavButton>
+    <NavButton color="primary" onClick={() => handleLink("/memegen")}>
+      Meme Gen
+    </NavButton>
     <NavButton color="secondary" onClick={() => handleLink("/items")}>
       Shop
     </NavButton>
