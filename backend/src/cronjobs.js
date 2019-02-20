@@ -18,8 +18,8 @@ createDirectory("cronjob-files")
 // create cronjob functions
 const scrapeSites = async () => {
   rule.dayOfWeek = [0, new scheduler.Range(0, 6)]
-  rule.hour = 4
-  rule.minute = 20
+  rule.hour = 15
+  rule.minute = 00
   // rule.hour = 7
   // rule.minute = 10
   scheduler.scheduleJob(rule, function() {

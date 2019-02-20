@@ -68,6 +68,11 @@ injectGlobal`
     text-decoration: none;
     color: ${theme.palette.common.black};
   }
+  .highlight {
+    color: black;
+    /* background-color: yellow; */
+    background-color: ${theme.palette.secondary.main};
+  }
   button {  font-family: ${theme.typography.fontFamily}; }
   #nprogress {
     .bar {
@@ -92,17 +97,17 @@ injectGlobal`
 class Page extends Component {
   render() {
     return (
-      <NoSsr>
-        <MuiThemeProvider theme={theme}>
-          <ThemeProvider theme={theme}>
-            <StyledPage>
-              <Meta />
-              <Header />
-              <Inner>{this.props.children}</Inner>
-            </StyledPage>
-          </ThemeProvider>
-        </MuiThemeProvider>
-      </NoSsr>
+      // <NoSsr>
+      <MuiThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
+          <StyledPage>
+            <Meta />
+            <Header />
+            <Inner>{this.props.children}</Inner>
+          </StyledPage>
+        </ThemeProvider>
+      </MuiThemeProvider>
+      // </NoSsr>
     )
   }
 }

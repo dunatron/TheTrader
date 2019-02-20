@@ -7,6 +7,8 @@ import {
   CellMeasurerCache,
 } from "react-virtualized"
 
+import SearchResult from "./SearchResult"
+
 const cache = new CellMeasurerCache({
   fixedWidth: true,
   defaultHeight: 50,
@@ -22,6 +24,17 @@ export default class TronsVirtualizedList extends Component {
     // console.log("index => ", index)
     // console.log("key => ", key)
     // console.groupEnd()
+    // return (
+    //   <CellMeasurer
+    //     key={key}
+    //     cache={cache}
+    //     parent={parent}
+    //     columnIndex={0}
+    //     clearAll={true}
+    //     rowIndex={index}>
+    //     <SearchResult data={this.props.data[index]} />
+    //   </CellMeasurer>
+    // )
     return (
       <CellMeasurer
         key={key}
@@ -30,15 +43,42 @@ export default class TronsVirtualizedList extends Component {
         columnIndex={0}
         clearAll={true}
         rowIndex={index}>
-        <div style={{ ...style }}>
-          <a href={this.props.data[index].url} target="_blank">
+        <div
+          style={{
+            ...style,
+            maxHeight: 165,
+            overflow: "hidden",
+            borderBottom: "2px solid grey",
+          }}>
+          {/* <a href={this.props.data[index].url} target="_blank">
             {this.props.data[index].url}
-          </a>
-          <div>{this.props.data[index].title}</div>
-          <div>{this.props.data[index].description}</div>
-          <div>{this.props.data[index].mainContent}</div>
-          <div>{this.props.data[index].secondaryContent}</div>
-          <hr />
+          </a> */}
+          <div
+            dangerouslySetInnerHTML={{ __html: this.props.data[index].url }}
+          />
+          <div
+            dangerouslySetInnerHTML={{ __html: this.props.data[index].title }}
+          />
+          <div
+            dangerouslySetInnerHTML={{
+              __html: this.props.data[index].description,
+            }}
+          />
+          <div
+            dangerouslySetInnerHTML={{
+              __html: this.props.data[index].keywords,
+            }}
+          />
+          <div
+            dangerouslySetInnerHTML={{
+              __html: this.props.data[index].mainContent,
+            }}
+          />
+          <div
+            dangerouslySetInnerHTML={{
+              __html: this.props.data[index].secondaryContent,
+            }}
+          />
         </div>
       </CellMeasurer>
     )
