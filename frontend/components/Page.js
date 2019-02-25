@@ -97,17 +97,17 @@ injectGlobal`
 class Page extends Component {
   render() {
     return (
-      // <NoSsr>
-      <MuiThemeProvider theme={theme}>
-        <ThemeProvider theme={theme}>
-          <StyledPage>
-            <Meta />
-            <Header />
-            <Inner>{this.props.children}</Inner>
-          </StyledPage>
-        </ThemeProvider>
-      </MuiThemeProvider>
-      // </NoSsr>
+      <NoSsr>
+        <MuiThemeProvider theme={theme}>
+          <ThemeProvider theme={theme}>
+            <StyledPage>
+              <Meta />
+              <Header />
+              <Inner>{this.props.children}</Inner>
+            </StyledPage>
+          </ThemeProvider>
+        </MuiThemeProvider>
+      </NoSsr>
     )
   }
 }

@@ -662,7 +662,7 @@ const theme = {
       letterSpacing: "0.08333em",
       textTransform: "uppercase",
     },
-    useNextVariants: false,
+    useNextVariants: true,
   },
   shape: { borderRadius: 4 },
   spacing: { unit: 8 },

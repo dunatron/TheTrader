@@ -37,8 +37,8 @@ export default class Files extends Component {
             console.log("Items data => ", data)
             return (
               <FilesList>
-                {data.files.map(file => (
-                  <TransitionGroup>
+                {data.files.map((file, i) => (
+                  <TransitionGroup key={i}>
                     <FileCard file={file} />
                   </TransitionGroup>
                 ))}

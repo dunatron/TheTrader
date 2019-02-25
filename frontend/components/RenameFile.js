@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { Mutation } from "react-apollo"
 import gql from "graphql-tag"
+import PureTextInput from "./inputs/TextInput"
 
 const RENAME_FILE_MUTATION = gql`
   mutation renameFile($id: ID!, $filename: String!) {
@@ -27,6 +28,14 @@ class RenameFile extends Component {
   //   // 3. Put the items back!
   //   cache.writeQuery({ query: ALL_FILES_QUERY, data })
   // }
+  rename = renameFile => {
+    if (this.props.filename !== this.state.filename)
+      if (confirm("Are you sure you want to rename this file?"))
+        renameFile().catch(err => {
+          alert(err.message)
+        })
+      else this.setState({ filename: this.props.filename })
+  }
   render() {
     return (
       <Mutation
@@ -35,16 +44,14 @@ class RenameFile extends Component {
         // update={this.update}
       >
         {(renameFile, { error }) => (
-          <input
+          <PureTextInput
+            id={`rename-file-${this.props.id}`}
+            name={`file-${this.props.id}`}
             value={this.state.filename}
+            style={{ minWidth: 252, marginTop: 0 }}
+            color="secondary"
             onChange={e => this.setState({ filename: e.target.value })}
-            onBlur={() => {
-              if (confirm("Are you sure you want to rename this file?")) {
-                renameFile().catch(err => {
-                  alert(err.message)
-                })
-              }
-            }}
+            onBlur={() => this.rename(renameFile)}
           />
         )}
       </Mutation>
