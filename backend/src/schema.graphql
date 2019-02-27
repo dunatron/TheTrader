@@ -1,0 +1,71 @@
+# import * from './generated/prisma.graphql'
+
+scalar Json
+scalar Float
+scalar Upload
+
+type SuccessMessage {
+  message: String
+}
+
+type Mutation {
+  createItem(data: ItemCreateWithoutUserInput!, file: Upload): Item!
+  # updateItem(data: ItemUpdateDataInput, file: Upload): Item!
+  updateItem(
+    id: ID!
+    title: String
+    description: String
+    price: Float
+    file: Upload
+    currency: CURRENCY_CODES
+    file: Upload
+  ): Item!
+
+  deleteItem(id: ID!): Item
+  singleUpload(file: Upload!): File!
+  uploadFile(file: Upload!): File!
+  uploadFiles(files: [Upload!]!): [File!]!
+  deleteFile(id: ID!): File
+  renameFile(id: ID!, filename: String!): File
+  signup(email: String!, password: String!, name: String!): User!
+  signin(email: String!, password: String!): User!
+  signout: SuccessMessage
+  requestReset(email: String!): SuccessMessage
+  resetPassword(
+    resetToken: String!
+    password: String!
+    confirmPassword: String!
+  ): User!
+  updatePermissions(permissions: [Permission], userId: ID!): User
+  addToCart(id: ID!): CartItem
+  removeFromCart(id: ID!): CartItem
+  createOrder(token: String!): Order!
+}
+
+type Query {
+  items(
+    where: ItemWhereInput
+    orderBy: ItemOrderByInput
+    skip: Int
+    first: Int
+  ): [Item]!
+  item(where: ItemWhereUniqueInput!): Item
+  itemsConnection(where: ItemWhereInput): ItemConnection!
+  exchangeRates(baseCurrency: String!): Json
+  file(id: ID!): File
+  files: [File!]!
+  me: User
+  users: [User]!
+  order(id: ID!): Order
+  orders(orderBy: OrderOrderByInput): [Order]!
+}
+
+# make sure password field cannot be returned
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  permissions: [Permission!]!
+  # cart: [CartItem!]!
+  # orders: [OrderItem]
+}

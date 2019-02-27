@@ -1,0 +1,107 @@
+enum Permission {
+  ADMIN
+  USER
+  ITEMCREATE
+  ITEMUPDATE
+  ITEMDELETE
+  PERMISSIONUPDATE
+}
+
+type User {
+  id: ID! @unique
+  name: String!
+  email: String! @unique
+  password: String!
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: [Permission]
+  currency: CURRENCY_CODES! @default(value: "NZD")
+  sellingItems: [Item!]!
+  cart: [CartItem!]!
+}
+
+type File {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  filename: String!
+  mimetype: String!
+  encoding: String!
+  url: String! @unique
+}
+
+type Item {
+  id: ID! @unique
+  title: String!
+  description: String!
+  image: File
+  currency: CURRENCY_CODES! @default(value: "NZD")
+  price: Float!
+  # createAt: DateTime!
+  # updatedAt: DateTime!
+  # user: User!
+  user: User!
+}
+
+type CartItem {
+  id: ID! @unique
+  quantity: Int! @default(value: 1)
+  item: Item # relationship to Item
+  user: User! # relationship to User
+}
+
+type OrderItem {
+  id: ID! @unique
+  title: String!
+  description: String!
+  image: String!
+  largeImage: String!
+  price: Int!
+  quantity: Int! @default(value: 1)
+  user: User
+}
+
+type Order {
+  id: ID! @unique
+  items: [OrderItem!]!
+  total: Int!
+  user: User!
+  charge: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum CURRENCY_CODES {
+  NZD
+  CAD
+  MXN
+  AUD
+  CNY
+  PHP
+  GBP
+  CZK
+  USD
+  SEK
+  NOK
+  TRY
+  IDR
+  ZAR
+  MYR
+  HKD
+  HUF
+  ISK
+  HRK
+  JPY
+  BGN
+  SGD
+  RUB
+  RON
+  CHF
+  DKK
+  INR
+  KRW
+  THB
+  BRL
+  PLN
+  ILS
+}
