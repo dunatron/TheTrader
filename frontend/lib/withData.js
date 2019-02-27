@@ -8,9 +8,9 @@ import { endpoint, prodEndpoint } from "../config"
 function createClient({ headers }) {
   const authLink = new ApolloLink((operation, forward) => {
     operation.setContext({
-      fetchOptions: {
-        credentials: "include",
-      },
+      // fetchOptions: {
+      //   credentials: "include",
+      // },
       headers: headers,
     })
     return forward(operation)
