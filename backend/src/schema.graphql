@@ -4,6 +4,20 @@ scalar Json
 scalar Float
 scalar Upload
 
+type SuccessMessage {
+  message: String
+}
+
+# make sure password field cannot be returned
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  permissions: [Permission!]!
+  # cart: [CartItem!]!
+  # orders: [OrderItem]
+}
+
 type Mutation {
   createItem(data: ItemCreateInput!, file: Upload): Item!
   # updateItem(data: ItemUpdateDataInput, file: Upload): Item!
@@ -23,6 +37,19 @@ type Mutation {
   uploadFiles(files: [Upload!]!): [File!]!
   deleteFile(id: ID!): File
   renameFile(id: ID!, filename: String!): File
+  signup(email: String!, password: String!, name: String!): User!
+  signin(email: String!, password: String!): User!
+  signout: SuccessMessage
+  requestReset(email: String!): SuccessMessage
+  resetPassword(
+    resetToken: String!
+    password: String!
+    confirmPassword: String!
+  ): User!
+  updatePermissions(permissions: [Permission], userId: ID!): User
+  addToCart(id: ID!): CartItem
+  removeFromCart(id: ID!): CartItem
+  createOrder(token: String!): Order!
 }
 
 type Query {
@@ -37,4 +64,8 @@ type Query {
   exchangeRates(baseCurrency: String!): Json
   file(id: ID!): File
   files: [File!]!
+  me: User
+  users: [User]!
+  order(id: ID!): Order
+  orders(orderBy: OrderOrderByInput): [Order]!
 }

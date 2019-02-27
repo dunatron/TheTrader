@@ -133,6 +133,11 @@ class CreateItem extends Component {
     })
   }
 
+  update = proxy => {
+    console.log("Proxy = >", proxy)
+    // proxy.data.delete("AnyCacheKey")
+  }
+
   render() {
     const { uploading } = this.state
     console.log(this.state)
@@ -148,7 +153,7 @@ class CreateItem extends Component {
           title={<Title>Sell an Item</Title>}
         />
         <CardContent style={{ paddingTop: 0 }}>
-          <Mutation mutation={CREATE_ITEM_MUTATION}>
+          <Mutation mutation={CREATE_ITEM_MUTATION} update={this.update}>
             {(createItem, { loading, error }) => (
               <Form
                 data-test="form"
