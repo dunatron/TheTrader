@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import "react-virtualized/styles.css"
+// import "react-virtualized/styles.css"
 import {
   List,
   AutoSizer,

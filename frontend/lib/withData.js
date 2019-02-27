@@ -18,7 +18,11 @@ function createClient({ headers }) {
 
   const client = new ApolloClient({
     uri: process.env.NODE_ENV === "development" ? endpoint : prodEndpoint,
-    link: authLink.concat(createUploadLink({ uri: endpoint })),
+    link: authLink.concat(
+      createUploadLink({
+        uri: process.env.NODE_ENV === "development" ? endpoint : prodEndpoint,
+      })
+    ),
     cache: new InMemoryCache(),
   })
   return client
