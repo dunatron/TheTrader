@@ -66,6 +66,6 @@ type User {
   name: String!
   email: String!
   permissions: [Permission!]!
-  # cart: [CartItem!]!
-  # orders: [OrderItem]
+  cart: [CartItem!]!
+  orders: [OrderItem]
 }
