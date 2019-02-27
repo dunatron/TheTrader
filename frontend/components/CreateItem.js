@@ -15,34 +15,13 @@ import FieldSet from "./styles/FieldSet"
 import CurrencyCodesSelect from "./SelectCurrencyCode"
 import Button from "./styles/Button"
 import Error from "./ErrorMessage"
-import FileUploader from "./FileUploader"
 import DragDropUploader from "./DragDropUploader"
 import encodeImage from "../lib/encodeImage"
 import { openSnackbar } from "../components/Notifier"
+import PureImage from "./PureImage"
 // https://github.com/exchangeratesapi/exchangeratesapi
 var fx = require("money")
 
-// const CREATE_ITEM_MUTATION = gql`
-//   mutation CREATE_ITEM_MUTATION(
-//     $title: String!
-//     $description: String!
-//     $price: Float!
-//     $image: String
-//     $largeImage: String
-//     $currency: CURRENCY_CODES!
-//   ) {
-//     createItem(
-//       title: $title
-//       description: $description
-//       price: $price
-//       image: $image
-//       largeImage: $largeImage
-//       currency: $currency
-//     ) {
-//       id
-//     }
-//   }
-// `
 const CREATE_ITEM_MUTATION = gql`
   mutation CREATE_ITEM_MUTATION($data: ItemCreateInput!, $file: Upload) {
     createItem(data: $data, file: $file) {
@@ -54,16 +33,6 @@ const Title = styled.h2`
   font-size: 2.5rem;
   color: ${p => p.theme.palette.primary.main};
 `
-// Note this Image is being rendered again everytime. Stopit from doing this I guess
-// const renderFileImage = file => {
-//   const src = "data:image/png;base64," + encodeImage(file.content)
-//   return <CardMedia component="img" src={src} image={src} title={file.name} />
-// }
-
-const RenderFileImage = file => {
-  const src = "data:image/png;base64," + encodeImage(file.content)
-  return <CardMedia component="img" src={src} image={src} title={file.name} />
-}
 
 const ImageComponent = React.memo(function ImageComponent(props) {
   /* render using props */
@@ -84,16 +53,6 @@ class CreateItem extends Component {
     file: null,
     uploading: false,
   }
-
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   // if (this.props.title !== nextProps.color) {
-  //   //   return true
-  //   // }
-  //   if (this.state.title !== nextState.title) {
-  //     return true
-  //   }
-  //   return false
-  // }
 
   handleChange = e => {
     const { name, type, value } = e.target
@@ -146,8 +105,8 @@ class CreateItem extends Component {
 
   submitForm = async (e, createItem) => {
     e.preventDefault()
-    // upload file to cloudinary
-    await this.uploadFile()
+    // upload file to cloudinary NOTE: now on backend
+    // await this.uploadFile()
     // createItem in the database via mutation
     const res = await createItem({
       variables: {
@@ -233,9 +192,7 @@ class CreateItem extends Component {
                     extensions={[".jpg", ".png"]}
                     receiveFile={file => this.setFileInState(file)}
                   />
-                  {this.state.file && (
-                    <ImageComponent image={this.state.file} />
-                  )}
+                  {this.state.file && <PureImage file={this.state.file} />}
                   <Button
                     size="large"
                     type="submit"

@@ -26,7 +26,6 @@ class Item extends Component {
             <a>{item.title}</a>
           </Link>
         </Title>
-        {/* <PriceTag>{item.price}</PriceTag> */}
         <PriceTag>{formatMoney(item.price)}</PriceTag>
         <p>{item.description}</p>
 
@@ -39,7 +38,7 @@ class Item extends Component {
             <a>Edit ✏️</a>
           </Link>
           <div>Add</div>
-          <DeleteItem id={item.id} />
+          <DeleteItem id={item.id}>Delete</DeleteItem>
         </div>
       </ItemStyles>
     )

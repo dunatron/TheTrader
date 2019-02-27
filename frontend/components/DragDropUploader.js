@@ -128,22 +128,20 @@ class DragDropUploader extends Component {
   }
 
   handleSingleFile = file => {
-    console.log("Handle a single file => ", file)
     readFileIntoMemory(file, this.processedFile)
   }
 
   handleFiles = async files => {
     const { multiple } = this.props
-    if (!multiple) {
-      return this.handleSingleFile(files[0])
-    }
     const allowedExtensions = this.allowedExtensions()
     const allowedFiles = Object.values(files)
       .map(file => file)
       .filter(f => allowedExtensions.includes(f.type))
+    if (!multiple) {
+      return this.handleSingleFile(allowedFiles[0])
+    }
     this.setState({ numToProcess: allowedFiles.length })
     allowedFiles.map(file => readFileIntoMemory(file, this.processedFile))
-    // this.setState({ processing: false })
   }
 
   onFileChange = e => {

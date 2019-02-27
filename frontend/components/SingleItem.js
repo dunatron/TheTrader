@@ -9,6 +9,7 @@ const SingleItemStyles = styled.div`
   max-width: 1200px;
   margin: 2rem auto;
   box-shadow: ${props => props.theme.bs};
+  box-sizing: border-box;
   display: grid;
   grid-auto-columns: 1fr;
   grid-auto-flow: column;
@@ -19,8 +20,18 @@ const SingleItemStyles = styled.div`
     object-fit: contain;
   }
   .details {
+    box-sizing: border-box;
     margin: 3rem;
     font-size: 2rem;
+  }
+  @media (max-width: ${props => props.theme.breakpoints.values.sm}px) {
+    display: flex;
+    flex-wrap: wrap;
+    .details {
+      box-sizing: border-box;
+      margin: 0 1rem;
+      font-size: 1.2rem;
+    }
   }
 `
 
@@ -59,9 +70,13 @@ class SingleItem extends Component {
           return (
             <SingleItemStyles>
               <Head>
-                <title>Sick Fits | {item.title}</title>
+                <title>The Trader | {item.title}</title>
               </Head>
-              {item.image && <img src={item.image.url} alt={item.title} />}
+              {item.image && (
+                <div>
+                  <img src={item.image.url} alt={item.title} />
+                </div>
+              )}
 
               <div className="details">
                 <h2>Viewing {item.title}</h2>

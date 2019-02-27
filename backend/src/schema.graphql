@@ -6,15 +6,17 @@ scalar Upload
 
 type Mutation {
   createItem(data: ItemCreateInput!, file: Upload): Item!
+  # updateItem(data: ItemUpdateDataInput, file: Upload): Item!
   updateItem(
     id: ID!
     title: String
     description: String
     price: Float
-    image: String
-    largeImage: String
+    file: Upload
     currency: CURRENCY_CODES
+    file: Upload
   ): Item!
+
   deleteItem(id: ID!): Item
   singleUpload(file: Upload!): File!
   uploadFile(file: Upload!): File!
@@ -24,8 +26,14 @@ type Mutation {
 }
 
 type Query {
-  items: [Item]!
+  items(
+    where: ItemWhereInput
+    orderBy: ItemOrderByInput
+    skip: Int
+    first: Int
+  ): [Item]!
   item(where: ItemWhereUniqueInput!): Item
+  itemsConnection(where: ItemWhereInput): ItemConnection!
   exchangeRates(baseCurrency: String!): Json
   file(id: ID!): File
   files: [File!]!

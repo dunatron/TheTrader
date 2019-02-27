@@ -50,24 +50,43 @@ const Mutation = {
 
     return item
   },
-  updateItem(parent, args, ctx, info) {
+  async updateItem(parent, args, ctx, info) {
+    console.log("args => ", args)
     // first take a copy of the updates
     const updates = { ...args }
+    const where = { id: args.id }
+    console.group("updateItem")
+    console.log("updates start => ", updates)
     // remove the ID from the updates
     delete updates.id
-    // if we have an imageItem delete the oldImage
-    if (this.updates.file)
-      // add the newImage
-      // run the update method
-      return ctx.db.mutation.updateItem(
-        {
-          data: updates,
-          where: {
-            id: args.id,
-          },
-        },
-        info
+    // new file to update
+    if (updates.file) {
+      // get the old item data
+      const item = await ctx.db.query.item(
+        { where },
+        `{ id title, image {id url} }`
       )
+      if (item.image) {
+        deleteFile({ id: item.image.id, url: item.image.url, ctx })
+      }
+      const uploadedFile = await processUpload(await updates.file, ctx)
+      updates.image = {
+        connect: {
+          id: uploadedFile.id,
+        },
+      }
+    }
+    delete updates.file
+    // run the update method
+    return ctx.db.mutation.updateItem(
+      {
+        data: updates,
+        where: {
+          id: args.id,
+        },
+      },
+      info
+    )
   },
   async deleteItem(parent, args, ctx, info) {
     const where = { id: args.id }
@@ -106,7 +125,10 @@ const Mutation = {
     return Promise.all(files.map(file => processUpload(file, ctx)))
   },
   async renameFile(parent, { id, filename }, ctx, info) {
-    return ctx.db.mutation.updateFile({ data: { filename }, where: { id } }, info)
+    return ctx.db.mutation.updateFile(
+      { data: { filename }, where: { id } },
+      info
+    )
   },
   async deleteFile(parent, { id }, ctx, info) {
     const file = await ctx.db.query.file({ where: { id } }, `{id url}`)

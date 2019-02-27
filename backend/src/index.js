@@ -19,9 +19,8 @@ const expressLogger = function(req, res, next) {
 server.use(expressLogger)
 
 server.get("/tron-search", function(req, res) {
-  var foo = require("../cronjob-files/pages.json")
-  // res.send("Hello World!")
-  res.send(foo)
+  var searchFile = require("../cronjob-files/pages.json")
+  res.send(searchFile)
 })
 
 server.start(

@@ -15,7 +15,8 @@ import FieldSet from "./styles/FieldSet"
 import CurrencyCodesSelect from "./SelectCurrencyCode"
 import Button from "./styles/Button"
 import Error from "./ErrorMessage"
-import FileUploader from "./FileUploader"
+import DragDropUploader from "./DragDropUploader"
+import PureImage from "./PureImage"
 
 const SINGLE_ITEM_QUERY = gql`
   query SINGLE_ITEM_QUERY($id: ID!) {
@@ -25,8 +26,15 @@ const SINGLE_ITEM_QUERY = gql`
       description
       price
       currency
-      image
-      largeImage
+      image {
+        id
+        createdAt
+        updatedAt
+        filename
+        mimetype
+        encoding
+        url
+      }
     }
   }
 `
@@ -37,18 +45,16 @@ const UPDATE_ITEM_MUTATION = gql`
     $title: String
     $description: String
     $price: Float
-    $image: String
-    $largeImage: String
     $currency: CURRENCY_CODES
+    $file: Upload
   ) {
     updateItem(
       id: $id
       title: $title
       description: $description
       price: $price
-      image: $image
-      largeImage: $largeImage
       currency: $currency
+      file: $file
     ) {
       id
     }
@@ -76,39 +82,12 @@ class UpdateItem extends Component {
       file: d,
     })
   }
-  uploadFile = async e => {
-    this.setState({ uploading: true })
-    const file = this.state.file.rawFile
-    const data = new FormData()
-    data.append("file", file)
-    data.append("upload_preset", "thetrader") // needed by cloudinary
-    const res = await fetch(
-      "https://api.cloudinary.com/v1_1/dkhe0hx1r/image/upload",
-      {
-        method: "POST",
-        body: data,
-      }
-    )
-    const cloudinaryFile = await res.json()
-    this.setState({
-      image: cloudinaryFile.secure_url,
-      largeImage: cloudinaryFile.eager[0].secure_url,
-      uploading: false,
-    })
-  }
 
   _updateItem = async (e, updateItem, oldData) => {
     e.preventDefault()
     const variables = this._getQueryVariables()
-    console.log(" _updateItem Variables => ", variables)
-    if (this.state.file) {
-      // we have uploaded a new file and should delete and upload a new one
-      await this.uploadFile()
-    }
-
     const res = await updateItem({ variables: variables })
     // change them to the single item page
-    console.log(res)
     Router.push({
       pathname: "/item",
       query: { id: res.data.updateItem.id },
@@ -117,10 +96,12 @@ class UpdateItem extends Component {
 
   _getQueryVariables = () => {
     const updatedData = this.state
+    const file = this.state.file ? this.state.file.raw : undefined
     delete updatedData.file
     const data = {
       id: this.props.id,
       ...updatedData,
+      file: file,
     }
     return { ...data }
   }
@@ -130,7 +111,7 @@ class UpdateItem extends Component {
     const { uploading } = this.state
     return (
       <Query query={SINGLE_ITEM_QUERY} variables={{ id: this.props.id }}>
-        {({ data, loading, error }) => {
+        {({ data, loading, error, refetch }) => {
           console.log("data => ", data)
           if (loading) return <p>Loading...</p>
           if (!data.item) return <p>No Item found for ID {this.props.id}</p>
@@ -146,7 +127,15 @@ class UpdateItem extends Component {
                 title={<Title>Sell an Item</Title>}
               />
               <CardContent style={{ paddingTop: 0 }}>
-                <Mutation mutation={UPDATE_ITEM_MUTATION}>
+                <Mutation
+                  mutation={UPDATE_ITEM_MUTATION}
+                  refetchQueries={[
+                    {
+                      query: SINGLE_ITEM_QUERY,
+                      variables: { id: this.props.id },
+                    },
+                  ]}
+                  update={this.updateCache}>
                   {(updateItem, { loading, error }) => (
                     <Form
                       data-test="form"
@@ -177,11 +166,24 @@ class UpdateItem extends Component {
                           onChange={this.handleChange}
                         />
                         <TextInput
+                          multiline={true}
+                          id="create-item-title"
+                          name="description"
+                          label="Description"
+                          defaultValue={data.item.description}
+                          onChange={this.handleChange}
+                          placeholder="enter description"
+                          fullWidth={false}
+                          margin="normal"
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                        />
+                        <TextInput
                           id="create-item-title"
                           name="price"
                           label="Price"
                           type="number"
-                          // value={this.state.price}
                           defaultValue={data.item.price}
                           onChange={this.handleChange}
                           placeholder="Placeholder"
@@ -191,19 +193,13 @@ class UpdateItem extends Component {
                             shrink: true,
                           }}
                         />
-                        <FileUploader
-                          processData={fileData =>
-                            this.setFileInState(fileData)
-                          }
+                        <DragDropUploader
+                          disabled={loading}
+                          types={["image"]}
+                          extensions={[".jpg", ".png"]}
+                          receiveFile={file => this.setFileInState(file)}
                         />
-                        {data.item.image && (
-                          <CardMedia
-                            component="img"
-                            src={data.item.image}
-                            // image={this.state.file.data}
-                            title={data.item.image}
-                          />
-                        )}
+                        {this.renderImage(data.item.image)}
                         <Button
                           size="large"
                           type="submit"
@@ -221,6 +217,14 @@ class UpdateItem extends Component {
           )
         }}
       </Query>
+    )
+  }
+  renderImage = originalImage => {
+    if (!this.state.file && !originalImage) {
+      return null
+    }
+    return (
+      <PureImage file={this.state.file ? this.state.file : originalImage} />
     )
   }
 }

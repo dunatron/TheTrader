@@ -2,7 +2,7 @@ import ItemsComponent from "../components/Items"
 
 const ItemsPage = props => (
   <div>
-    <ItemsComponent />
+    <ItemsComponent page={parseFloat(props.query.page) || 1} />
   </div>
 )
 
