@@ -98,7 +98,7 @@ class CreateItem extends Component {
     const { uploading } = this.state
     return (
       <CardsWrapper>
-        <Card className="card" raised={true}>
+        <Card className="card" variant="contained">
           <CardHeader
             style={{ paddingBottom: 0 }}
             avatar={
@@ -145,7 +145,7 @@ class CreateItem extends Component {
           </CardContent>
         </Card>
         {this.state.files.length >= 1 && (
-          <Card className="card" raised={true}>
+          <Card className="card" variant="contained">
             <ImageGridList
               tileData={this.state.files.map((file, idx) => {
                 const src = "data:image/png;base64," + encodeImage(file.content)

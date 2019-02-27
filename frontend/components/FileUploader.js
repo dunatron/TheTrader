@@ -157,7 +157,7 @@ class DnDFileReader extends Component {
           <span className={classes.dropSubTitle}>{"or click to browse"}</span>
           <label htmlFor="raised-button-file">
             <Button
-              variant="raised"
+              variant="contained"
               component="span"
               className={classes.button}>
               Browse Files

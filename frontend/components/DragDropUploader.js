@@ -89,7 +89,7 @@ class DragDropUploader extends Component {
           <Button
             disabled={disabled}
             color={dragging ? "secondary" : "primary"}
-            variant="raised"
+            variant="contained"
             component="span"
             //  className={classes.button}
           >

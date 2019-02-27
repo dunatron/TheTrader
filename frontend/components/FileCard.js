@@ -18,7 +18,7 @@ class FileCard extends Component {
   render() {
     const { file } = this.props
     return (
-      <Card raised={true} theme={{ maxWidth: 350 }} style={{ margin: 10 }}>
+      <Card variant="contained" theme={{ maxWidth: 350 }} style={{ margin: 10 }}>
         <CardHeader
           style={{ paddingBottom: 0 }}
           avatar={<DeleteFile id={file.id}>Delete Forever</DeleteFile>}

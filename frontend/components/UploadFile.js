@@ -77,7 +77,7 @@ class CreateItem extends Component {
     console.log("this.state ", this.state)
     const { uploading } = this.state
     return (
-      <Card raised={true} theme={{ maxWidth: 350 }}>
+      <Card variant="contained" theme={{ maxWidth: 350 }}>
         <CardContent style={{ paddingTop: 0 }}>
           <Mutation mutation={SINGLE_UPLOAD_MUTATION}>
             {(singleUpload, { loading, error }) => (

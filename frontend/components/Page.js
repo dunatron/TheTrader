@@ -10,6 +10,7 @@ import Meta from "./Meta"
 // Material UI
 import NoSsr from "@material-ui/core/NoSsr"
 import muiTheme from "./styles/_muiTheme"
+import Notifier, { openSnackbar } from "../components/Notifier"
 
 const theme = createMuiTheme(muiTheme)
 
@@ -103,6 +104,7 @@ class Page extends Component {
             <StyledPage>
               <Meta />
               <Header />
+              <Notifier />
               <Inner>{this.props.children}</Inner>
             </StyledPage>
           </ThemeProvider>

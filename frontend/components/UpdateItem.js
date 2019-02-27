@@ -135,7 +135,7 @@ class UpdateItem extends Component {
           if (loading) return <p>Loading...</p>
           if (!data.item) return <p>No Item found for ID {this.props.id}</p>
           return (
-            <Card raised={true} theme={{ maxWidth: 350 }}>
+            <Card variant="contained" theme={{ maxWidth: 350 }}>
               <CardHeader
                 style={{ paddingBottom: 0 }}
                 avatar={

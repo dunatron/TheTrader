@@ -18,6 +18,7 @@ import Error from "./ErrorMessage"
 import FileUploader from "./FileUploader"
 import DragDropUploader from "./DragDropUploader"
 import encodeImage from "../lib/encodeImage"
+import { openSnackbar } from "../components/Notifier"
 // https://github.com/exchangeratesapi/exchangeratesapi
 var fx = require("money")
 
@@ -68,12 +69,7 @@ const ImageComponent = React.memo(function ImageComponent(props) {
   /* render using props */
   const file = props.image
   const src = "data:image/png;base64," + encodeImage(file.content)
-  return (
-    <div>
-      <h1>I am Image Pur memo</h1>
-      <CardMedia component="img" src={src} image={src} title={file.name} />
-    </div>
-  )
+  return <CardMedia component="img" src={src} image={src} title={file.name} />
 })
 
 class CreateItem extends Component {
@@ -113,8 +109,9 @@ class CreateItem extends Component {
   }
   uploadFile = async e => {
     this.setState({ uploading: true })
-    const file = this.state.file.rawFile
+    const file = this.state.file.raw
     const data = new FormData()
+    console.log("his.state.file => ", this.state.file)
     data.append("file", file)
     data.append("upload_preset", "thetrader") // needed by cloudinary
     const res = await fetch(
@@ -125,6 +122,7 @@ class CreateItem extends Component {
       }
     )
     const cloudinaryFile = await res.json()
+    console.log("cloudinaryFile => ", cloudinaryFile)
     this.setState({
       image: cloudinaryFile.secure_url,
       largeImage: cloudinaryFile.eager[0].secure_url,
@@ -148,9 +146,9 @@ class CreateItem extends Component {
 
   submitForm = async (e, createItem) => {
     e.preventDefault()
-    alert("Form submission")
-    // call the mutation
-    // await this.uploadFile()
+    // upload file to cloudinary
+    await this.uploadFile()
+    // createItem in the database via mutation
     const res = await createItem({
       variables: {
         data: {
@@ -161,6 +159,13 @@ class CreateItem extends Component {
         },
         file: this.state.file.raw,
       },
+    })
+    // display notification to the user
+    openSnackbar({
+      message: `<h4>New Item created</h4><p>${res.data.createItem.id}</p><p>${
+        this.state.title
+      }</p><p>${this.state.price} ${this.state.currency}</p>`,
+      duration: 6000,
     })
     // change them to the single item page
     Router.push({
@@ -173,7 +178,7 @@ class CreateItem extends Component {
     const { uploading } = this.state
     console.log(this.state)
     return (
-      <Card raised={true} theme={{ maxWidth: 350 }}>
+      <Card variant="contained" theme={{ maxWidth: 350 }}>
         <CardHeader
           style={{ paddingBottom: 0 }}
           avatar={
@@ -228,22 +233,9 @@ class CreateItem extends Component {
                     extensions={[".jpg", ".png"]}
                     receiveFile={file => this.setFileInState(file)}
                   />
-                  {/* <FileUploader
-                    processData={fileData => this.setFileInState(fileData)}
-                    const src = "data:image/png;base64," + encodeImage(file.content)
-                  /> */}
                   {this.state.file && (
                     <ImageComponent image={this.state.file} />
                   )}
-                  {/* {this.state.file && renderFileImage(this.state.file)} */}
-                  {/* {this.state.file && (
-                    <CardMedia
-                      component="img"
-                      src={this.state.file.data}
-                      image={this.state.file.data}
-                      title={this.state.file.name}
-                    />
-                  )} */}
                   <Button
                     size="large"
                     type="submit"

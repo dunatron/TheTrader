@@ -2,6 +2,8 @@ import React, { Component } from "react"
 import { Mutation } from "react-apollo"
 import gql from "graphql-tag"
 import PureTextInput from "./inputs/TextInput"
+import Error from "./ErrorMessage"
+import Notifier, { openSnackbar } from "./Notifier"
 
 const RENAME_FILE_MUTATION = gql`
   mutation renameFile($id: ID!, $filename: String!) {
@@ -35,6 +37,7 @@ class RenameFile extends Component {
           alert(err.message)
         })
       else this.setState({ filename: this.props.filename })
+    openSnackbar({ message: "Empty field. Enter a number." })
   }
   render() {
     return (
@@ -44,15 +47,18 @@ class RenameFile extends Component {
         // update={this.update}
       >
         {(renameFile, { error }) => (
-          <PureTextInput
-            id={`rename-file-${this.props.id}`}
-            name={`file-${this.props.id}`}
-            value={this.state.filename}
-            style={{ minWidth: 252, marginTop: 0 }}
-            color="secondary"
-            onChange={e => this.setState({ filename: e.target.value })}
-            onBlur={() => this.rename(renameFile)}
-          />
+          <div>
+            <Error error={error} />
+            <PureTextInput
+              id={`rename-file-${this.props.id}`}
+              name={`file-${this.props.id}`}
+              value={this.state.filename}
+              style={{ minWidth: 252, marginTop: 0 }}
+              color="secondary"
+              onChange={e => this.setState({ filename: e.target.value })}
+              onBlur={() => this.rename(renameFile)}
+            />
+          </div>
         )}
       </Mutation>
     )
