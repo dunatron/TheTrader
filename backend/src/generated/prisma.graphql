@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/heath-dunlop-37e897/the-trader/dev
-# timestamp: Wed Feb 27 2019 19:18:52 GMT+1300 (New Zealand Daylight Time)
+# timestamp: Wed Feb 27 2019 20:06:15 GMT+1300 (New Zealand Daylight Time)
 
 type AggregateCartItem {
   count: Int!
@@ -2897,4 +2897,5 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
+  email: String
 }

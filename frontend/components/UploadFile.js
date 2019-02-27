@@ -10,7 +10,7 @@ import MoneyIcon from "@material-ui/icons/AttachMoney"
 import AvatarStyles from "./styles/AvatarStyles"
 import TextInput from "./styles/input/TextInput"
 import Card from "./styles/Card"
-import Form from "./styles/Form"
+import MaterialForm from "./styles/MaterialForm"
 import FieldSet from "./styles/FieldSet"
 import CurrencyCodesSelect from "./SelectCurrencyCode"
 import Button from "./styles/Button"
@@ -81,7 +81,7 @@ class CreateItem extends Component {
         <CardContent style={{ paddingTop: 0 }}>
           <Mutation mutation={SINGLE_UPLOAD_MUTATION}>
             {(singleUpload, { loading, error }) => (
-              <Form
+              <MaterialForm
                 data-test="form"
                 onSubmit={e => this.uploadFile(e, singleUpload)}>
                 <Error error={error} />
@@ -120,7 +120,7 @@ class CreateItem extends Component {
                     Submit
                   </Button>
                 </FieldSet>
-              </Form>
+              </MaterialForm>
             )}
           </Mutation>
         </CardContent>

@@ -10,7 +10,7 @@ import MoneyIcon from "@material-ui/icons/AttachMoney"
 import AvatarStyles from "./styles/AvatarStyles"
 import TextInput from "./styles/input/TextInput"
 import Card from "./styles/Card"
-import Form from "./styles/Form"
+import MaterialForm from "./styles/MaterialForm"
 import FieldSet from "./styles/FieldSet"
 import CurrencyCodesSelect from "./SelectCurrencyCode"
 import Button from "./styles/Button"
@@ -23,7 +23,10 @@ import PureImage from "./PureImage"
 var fx = require("money")
 
 const CREATE_ITEM_MUTATION = gql`
-  mutation CREATE_ITEM_MUTATION($data: ItemCreateInput!, $file: Upload) {
+  mutation CREATE_ITEM_MUTATION(
+    $data: ItemCreateWithoutUserInput!
+    $file: Upload
+  ) {
     createItem(data: $data, file: $file) {
       id
     }
@@ -155,7 +158,7 @@ class CreateItem extends Component {
         <CardContent style={{ paddingTop: 0 }}>
           <Mutation mutation={CREATE_ITEM_MUTATION} update={this.update}>
             {(createItem, { loading, error }) => (
-              <Form
+              <MaterialForm
                 data-test="form"
                 onSubmit={e => this.submitForm(e, createItem)}>
                 <Error error={error} />
@@ -207,7 +210,7 @@ class CreateItem extends Component {
                     Submit
                   </Button>
                 </FieldSet>
-              </Form>
+              </MaterialForm>
             )}
           </Mutation>
         </CardContent>

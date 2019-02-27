@@ -10,7 +10,7 @@ import MoneyIcon from "@material-ui/icons/AttachMoney"
 import AvatarStyles from "./styles/AvatarStyles"
 import TextInput from "./styles/input/TextInput"
 import Card from "./styles/Card"
-import Form from "./styles/Form"
+import MaterialForm from "./styles/MaterialForm"
 import FieldSet from "./styles/FieldSet"
 import CurrencyCodesSelect from "./SelectCurrencyCode"
 import Button from "./styles/Button"
@@ -137,7 +137,7 @@ class UpdateItem extends Component {
                   ]}
                   update={this.updateCache}>
                   {(updateItem, { loading, error }) => (
-                    <Form
+                    <MaterialForm
                       data-test="form"
                       onSubmit={e => this._updateItem(e, updateItem, data)}>
                       <Error error={error} />
@@ -209,7 +209,7 @@ class UpdateItem extends Component {
                           Sav{loading ? "ing" : "e"} Changes
                         </Button>
                       </FieldSet>
-                    </Form>
+                    </MaterialForm>
                   )}
                 </Mutation>
               </CardContent>

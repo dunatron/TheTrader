@@ -20,9 +20,9 @@ async function uploadImage() {}
 
 const Mutation = {
   async createItem(parent, args, ctx, info) {
-    // if (!ctx.request.userId) {
-    //   throw new Error('You must be logged in to do that!');
-    // }
+    if (!ctx.request.userId) {
+      throw new Error("You must be logged in to do that!")
+    }
 
     const {
       data: { id, title, description, currency, price },
@@ -45,6 +45,11 @@ const Mutation = {
           image: {
             connect: {
               id: uploadedFile.id,
+            },
+          },
+          user: {
+            connect: {
+              id: ctx.request.userId,
             },
           },
         },
@@ -212,7 +217,7 @@ const Mutation = {
     })
     // 3. Email them that reset token
     const mailRes = await transport.sendMail({
-      from: "wes@wesbos.com",
+      from: "heath.dunlop.hd.com",
       to: user.email,
       subject: "Your Password Reset Token",
       html: makeANiceEmail(`Your Password Reset Token is here!

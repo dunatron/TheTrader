@@ -13,41 +13,9 @@ const loading = keyframes`
 `
 
 const Form = styled.form`
-  box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.05);
-  background: rgba(0, 0, 0, 0.02);
-  border: 5px solid ${props => props.theme.palette.primary.light};
-  padding: 20px;
-  font-size: 1.5rem;
-  line-height: 1.5;
-  font-weight: 600;
-  label {
-    display: block;
-    margin-bottom: 1rem;
-  }
-  input,
-  textarea,
-  select {
-    width: 100%;
-    padding: 0.5rem;
-    font-size: 1rem;
-    border: 1px solid black;
-    &:focus {
-      outline: 0;
-      border-color: ${props => props.theme.red};
-    }
-  }
-  button,
-  input[type="submit"] {
-    width: auto;
-    /* background: red;
-    color: white; */
-    background: ${props => props.theme.palette.primary.main};
-    color: white;
-    border: 0;
-    font-size: 2rem;
-    font-weight: 600;
-    padding: 0.5rem 1.2rem;
-  }
+  display: flex;
+  flex-direction: column;
+  max-width: ${p => (p.maxWidth ? `${p.maxWidth}px` : "none")};
   fieldset {
     border: 0;
     padding: 0;

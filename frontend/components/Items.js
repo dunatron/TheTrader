@@ -46,20 +46,6 @@ export default class Items extends Component {
       <Center>
         <p>Items</p>
         <Pagination page={this.props.page} />
-        {/* <Query query={ALL_ITEMS_QUERY}>
-          {({ data, error, loading }) => {
-            if (loading) return <p>loading</p>
-            if (error) return <p>Error: {error.message}</p>
-            console.log("Items data => ", data)
-            return (
-              <ItemsList>
-                {data.items.map(item => (
-                  <ItemComponent item={item} key={item.id} />
-                ))}
-              </ItemsList>
-            )
-          }}
-        </Query> */}
         <Query
           query={ALL_ITEMS_QUERY}
           // fetchPolicy="network-only"
@@ -67,7 +53,7 @@ export default class Items extends Component {
             skip: this.props.page * itemsPerPage - itemsPerPage,
           }}>
           {({ data, error, loading }) => {
-            if (loading) return <p>Loading...</p>
+            if (loading) return <p>Loading Items...</p>
             if (error) return <p>Error: {error.message}</p>
             return (
               <ItemsList>

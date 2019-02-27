@@ -1,8 +1,11 @@
 import CreateBulkFiles from "../components/CreateBulkFiles"
+import PleaseSignIn from "../components/PleaseSignIn"
 
 const BulkFilesPage = props => (
   <div>
-    <CreateBulkFiles />
+    <PleaseSignIn>
+      <CreateBulkFiles />
+    </PleaseSignIn>
   </div>
 )
 
