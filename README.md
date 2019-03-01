@@ -236,5 +236,8 @@ PORT=4444
    1. sdfdfs
 2. Yoga Service
    - Heroku
-     - `heroku apps:create trader-yoga-prod`
+     - run `heroku apps:create trader-yoga-prod` which will create a git url and create a new remote
+     - Our app is however is structered into two folders at the root git level "backend" and "frontend" so we need to add a remote
+     - run `git remote add heroku-backend https://git.heroku.com/trader-yoga-prod.git`
+     - push subtree `git subtree push --prefix backend heroku-backend master`
 3. React/Next
