@@ -244,3 +244,6 @@ PORT=4444
    - Heroku
      - run `heroku apps:create trader-next-prod` which will create a git url and create a new remote
      - run `git remote add heroku-frontend https://git.heroku.com/trader-next-prod.git`
+     - You would then need to build the assets `yarn run build` but because we dont commit our next build we are in a funny situation
+     - SOLUTION add to package.json scripts `"heroku-postbuild": "next build"`
+     - You also need to modify the `start` command in package.json scripts `"start": "next start -p $PORT"`
