@@ -1,7 +1,8 @@
 import withApollo from "next-with-apollo"
 import { ApolloClient } from "apollo-client"
 import { InMemoryCache } from "apollo-cache-inmemory"
-import { ApolloLink } from "apollo-client-preset"
+// import { ApolloLink } from "apollo-client-preset"
+import { ApolloLink } from "apollo-link"
 import { createUploadLink } from "apollo-upload-client"
 import { endpoint, prodEndpoint } from "../config"
 
