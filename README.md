@@ -241,3 +241,6 @@ PORT=4444
      - run `git remote add heroku-backend https://git.heroku.com/trader-yoga-prod.git`
      - push subtree `git subtree push --prefix backend heroku-backend master`
 3. React/Next
+   - Heroku
+     - run `heroku apps:create trader-next-prod` which will create a git url and create a new remote
+     - run `git remote add heroku-frontend https://git.heroku.com/trader-next-prod.git`
