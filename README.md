@@ -229,3 +229,12 @@ PORT=4444
   - i.e when we upload a file it will have a random extension but predictable mimetype.
   - we can therefore specify our own extensions which will resolve to a mimetype that we can check for any uploaded file.
   - If we need to be more specific we can parse in the specific extensions
+
+## Deployment
+
+1. Prisma DB
+   1. sdfdfs
+2. Yoga Service
+   - Heroku
+     - `heroku apps:create trader-yoga-prod`
+3. React/Next
