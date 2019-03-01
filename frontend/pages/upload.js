@@ -6,4 +6,4 @@ const UpdateItemPage = props => (
   </div>
 )
 
-export default UploadFile
+export default UpdateItemPage

@@ -2,4 +2,5 @@
 export const endpoint = `http://localhost:4444`
 // export const prodEndpoint = `https://thetrader-yoga-prod.herokuapp.com`
 export const prodEndpoint = `https://thetrader-yoga-prod.herokuapp.com/`
+export const devEndpoint = `https://us1.prisma.sh/heath-dunlop-37e897/the-trader/dev`
 export const itemsPerPage = 4

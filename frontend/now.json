@@ -1,5 +1,5 @@
 {
   "version": 2,
-  "name": "tron-test",
-  "builds": [{ "src": "next.config.js", "use": "@now/next" }]
+  "name": "nextjs",
+  "builds": [{ "src": "package.json", "use": "@now/next" }]
 }

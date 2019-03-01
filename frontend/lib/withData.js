@@ -12,12 +12,17 @@ function createClient({ headers }) {
       // fetchOptions: {
       //   credentials: "include",
       // },
-      headers: headers,
+      // headers: headers,
+      headers: {
+        ...headers,
+        "Content-Type": "application/graphql",
+      },
     })
     return forward(operation)
   })
 
   const client = new ApolloClient({
+    ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
     uri: process.env.NODE_ENV === "development" ? endpoint : prodEndpoint,
     link: authLink.concat(
       createUploadLink({
