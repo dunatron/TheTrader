@@ -5,6 +5,10 @@ import TextInput from "./styles/input/TextInput"
 import TronsVirtualizedList from "./VirtualList"
 import { sort, sortBy, toLower, prop, compose, negate, countBy } from "ramda"
 import DelayInput from "./inputs/DelayInput"
+import { endpoint, prodEndpoint } from "../config"
+
+const serverEndpoint =
+  process.env.NODE_ENV === "development" ? endpoint : prodEndpoint
 
 String.prototype.splice = function(
   index,
@@ -152,7 +156,7 @@ export default class PolySearch extends Component {
 
   getSearchFile = () => {
     return new Promise(function(resolve, reject) {
-      fetch("http://localhost:4444/tron-search")
+      fetch(`${serverEndpoint}/tron-search`)
         .then(resp => resp.json()) // Transform the data into json
         .then(function(data) {
           if (data) resolve(data)
