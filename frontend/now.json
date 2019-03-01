@@ -1,5 +1,5 @@
 {
   "version": 2,
-  "name": "nextjs",
+  "name": "trader",
   "builds": [{ "src": "package.json", "use": "@now/next" }]
 }

@@ -5,24 +5,21 @@ import { InMemoryCache } from "apollo-cache-inmemory"
 import { ApolloLink } from "apollo-link"
 import { createUploadLink } from "apollo-upload-client"
 import { endpoint, prodEndpoint } from "../config"
+const tron = "sad because cookies arent being attached for mobile =("
 
 function createClient({ headers }) {
   const authLink = new ApolloLink((operation, forward) => {
     operation.setContext({
-      // fetchOptions: {
-      //   credentials: "include",
-      // },
-      // headers: headers,
-      headers: {
-        ...headers,
-        "Content-Type": "application/graphql",
+      fetchOptions: {
+        credentials: "include",
       },
+      headers: headers,
     })
     return forward(operation)
   })
 
   const client = new ApolloClient({
-    ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
+    // ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
     uri: process.env.NODE_ENV === "development" ? endpoint : prodEndpoint,
     link: authLink.concat(
       createUploadLink({
