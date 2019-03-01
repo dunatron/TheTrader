@@ -247,3 +247,4 @@ PORT=4444
      - You would then need to build the assets `yarn run build` but because we dont commit our next build we are in a funny situation
      - SOLUTION add to package.json scripts `"heroku-postbuild": "next build"`
      - You also need to modify the `start` command in package.json scripts `"start": "next start -p $PORT"`
+     - run `git subtree push --prefix frontend heroku-frontend master`
