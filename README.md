@@ -233,7 +233,7 @@ PORT=4444
 ## Deployment
 
 1. Prisma DB
-   1. sdfdfs
+   1. inside the `backend` directory run `yarn run deploy-prod`
 2. Yoga Service
    - Heroku
      - run `heroku apps:create trader-yoga-prod` which will create a git url and create a new remote

@@ -1,5 +1,5 @@
-# source: https://us1.prisma.sh/heath-dunlop-37e897/the-trader/dev
-# timestamp: Sun Mar 03 2019 14:25:10 GMT+1300 (New Zealand Daylight Time)
+# source: https://the-trader-prod-a9c5b680a7.herokuapp.com/trader-prod/prod
+# timestamp: Sun Mar 03 2019 21:34:19 GMT+1300 (New Zealand Daylight Time)
 
 type AggregateCartItem {
   count: Int!
@@ -221,7 +221,6 @@ input CartItemUpdateManyMutationInput {
 input CartItemUpdateManyWithoutUserInput {
   create: [CartItemCreateWithoutUserInput!]
   connect: [CartItemWhereUniqueInput!]
-  set: [CartItemWhereUniqueInput!]
   disconnect: [CartItemWhereUniqueInput!]
   delete: [CartItemWhereUniqueInput!]
   update: [CartItemUpdateWithWhereUniqueWithoutUserInput!]
@@ -1087,7 +1086,6 @@ input ItemUpdateManyMutationInput {
 input ItemUpdateManyWithoutUserInput {
   create: [ItemCreateWithoutUserInput!]
   connect: [ItemWhereUniqueInput!]
-  set: [ItemWhereUniqueInput!]
   disconnect: [ItemWhereUniqueInput!]
   delete: [ItemWhereUniqueInput!]
   update: [ItemUpdateWithWhereUniqueWithoutUserInput!]
@@ -1804,7 +1802,6 @@ input OrderItemUpdateManyDataInput {
 input OrderItemUpdateManyInput {
   create: [OrderItemCreateInput!]
   connect: [OrderItemWhereUniqueInput!]
-  set: [OrderItemWhereUniqueInput!]
   disconnect: [OrderItemWhereUniqueInput!]
   delete: [OrderItemWhereUniqueInput!]
   update: [OrderItemUpdateWithWhereUniqueNestedInput!]
