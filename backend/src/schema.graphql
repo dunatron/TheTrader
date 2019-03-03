@@ -58,6 +58,8 @@ type Query {
   users: [User]!
   order(id: ID!): Order
   orders(orderBy: OrderOrderByInput): [Order]!
+  polySearch(search: String!): [SearchEngineItem!]!
+  engineFullTextSearch(search: String!): [SearchEngineItem!]!
 }
 
 # make sure password field cannot be returned

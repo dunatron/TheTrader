@@ -281,3 +281,57 @@ mutation createSearchEngineItem($data: SearchEngineItemCreateInput!) {
   }
 }
 ```
+
+#### deleteSearchEngineItem
+
+```js
+mutation deleteSearchItem($where: SearchEngineItemWhereUniqueInput!) {
+  deleteSearchEngineItem(where:$where) {
+    id
+  }
+}
+```
+
+##### variables
+
+```js
+{
+  "where": {
+    "id": "cjss9d0h65zr20b70khfkwsh2"
+  }
+}
+```
+
+##### response
+
+```js
+{
+  "data": {
+    "deleteSearchEngineItem": {
+      "id": "cjss9d0h65zr20b70khfkwsh2"
+    }
+  }
+}
+```
+
+## Search all SearchEngineItem
+
+```js
+query engineFullTextSearch($search:String!) {
+  engineFullTextSearch(search:$search) {
+    id
+    title
+    description
+    mainContent
+    secondaryContent
+  }
+}
+```
+
+##### variables
+
+```js
+{
+  "search": "New Zealand Certificate in Arts and Design"
+}
+```

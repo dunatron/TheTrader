@@ -84,6 +84,43 @@ const Query = {
       info
     )
   },
+  async polySearch(parent, args, ctx, info) {
+    const search = args.search
+
+    const where = {
+      OR: [
+        { url_contains: search },
+        { title_contains: search },
+        { description_contains: search },
+        { keywords_contains: search },
+        { keywords_contains: search },
+        { mainContent_contains: search },
+        { secondaryContent_contains: search },
+      ],
+    }
+    const queriedItems = await ctx.db.query.searchEngineItems({ where }, info)
+
+    return queriedItems
+  },
+  async engineFullTextSearch(parent, args, context, info) {
+    // user supplied search string
+    const searchString = args.search.toLowerCase()
+    // func to filter our list by full text search on the name field
+    function find(items, text) {
+      text = text.split(" ")
+      return items.filter(function(item) {
+        return text.every(function(el) {
+          return item.title.toLowerCase().indexOf(el) > -1
+        })
+      })
+    }
+    // not ideal but get all of the questions returned to the server
+    const allItems = await context.db.query.searchEngineItems({}, info)
+    // filter by our search function
+    const searchedItems = find(allItems, searchString)
+    // send filtered list to the client
+    return searchedItems
+  },
 }
 
 module.exports = Query

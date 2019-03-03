@@ -2,6 +2,7 @@ var Crawler = require("crawler")
 const path = require("path")
 const db = require("../db")
 var fs = require("fs")
+const { deleteSearches } = require("./deleteSearchNodes")
 
 let already_crawled = []
 let pageId = 1
@@ -80,11 +81,21 @@ const crawlPage = (error, res, done) => {
     const mainContent = getContentFromTags($, ["h1", "h2", "h3", "h4"])
     const secondaryContent = getContentFromTags($, ["p"])
 
-    const allUsers = db.mutation.createSearchEngineItem(
-      { data: {} },
-      `{ id name email }`
+    // Store in the database instead!
+    db.mutation.createSearchEngineItem(
+      {
+        data: {
+          title: pageTitle,
+          url: uri,
+          keywords: keywords,
+          description: description,
+          mainContent: mainContent,
+          secondaryContent: secondaryContent,
+        },
+      },
+      null
     ) //pass additional fields here yo wanna get
-    console.log("allUserSoFar ->", allUsers)
+    // console.log("allUserSoFar ->", allUsers)
 
     // add scrapped data to our crawled_data array
     crawled_data.push({
@@ -141,13 +152,18 @@ const getContentFromTags = ($, tagTypes) => {
   for (type of tagTypes) {
     const tags = $(`${type}`)
     $(tags).each((i, tag) => {
-      var tagContent = $(tag).text()
-      tagContent.replace(/[^a-zA-Z ]/g, "")
-      tagContent.trim()
-      content = content + ` ${tagContent}`
+      var tagContent = $(tag)
+        .text()
+        .replace(/\s\s+/gm, "")
+        // .replace(/(\r\n|\n|\r)/gm, "")
+        .trim()
+      // ff string piece is empty don't concat empty space...
+      if (tagContent.length > 0) {
+        content = content + `${tagContent} `
+      }
     })
   }
-  return content
+  return content.trim()
 }
 
 const isLinkCrawlable = linkName => {
@@ -198,13 +214,16 @@ const buildLinkPath = (l, uri, protocol, host, directory) => {
   return fullPath
 }
 
-const tronCrawler = (urls, domains) => {
+const tronCrawler = async (urls, domains) => {
+  // 1. delete all nodes of SearchEngineItem
+  await deleteSearches()
+  // 2. create an empty list to store page urls that have been processed
   already_crawled = []
-
+  // 3. set the array of domains we can crawl
   for (domain of domains) {
     crawlableDomains.push(domain)
   }
-
+  // 4. create our crawler
   var c = new Crawler({
     // maxConnections: 100,
     // rateLimit: 10000, // `maxConnections` will be forced to 1
@@ -222,6 +241,7 @@ const tronCrawler = (urls, domains) => {
     // console.log("SITE QUEUE SIZE = > ", c.queueSize)
   })
 
+  // 5. queue up the homepage url for each site as the root
   for (url of urls) {
     c.queue(url)
   }

@@ -5,6 +5,7 @@ import Head from "next/head"
 import Link from "next/link"
 import PaginationStyles from "./styles/PaginationStyles"
 import { itemsPerPage } from "../config"
+import Error from "../components/ErrorMessage"
 
 const PAGINATION_QUERY = gql`
   query PAGINATION_QUERY {
@@ -20,7 +21,8 @@ const Pagination = props => (
   <Query query={PAGINATION_QUERY}>
     {({ data, loading, error }) => {
       if (loading) return null
-      const count = data.itemsConnection.aggregate.count
+      if (error) return <Error error={error} />
+      const count = !error ? data.itemsConnection.aggregate.count : props
       const pages = Math.ceil(count / itemsPerPage)
       const page = props.page
       return (
