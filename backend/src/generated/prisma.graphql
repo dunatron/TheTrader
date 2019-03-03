@@ -1,5 +1,5 @@
-# source: https://the-trader-prod-658deb489b.herokuapp.com/the-trader-prod/prod
-# timestamp: Thu Feb 28 2019 00:05:10 GMT+1300 (New Zealand Daylight Time)
+# source: https://us1.prisma.sh/heath-dunlop-37e897/the-trader/dev
+# timestamp: Sun Mar 03 2019 14:25:10 GMT+1300 (New Zealand Daylight Time)
 
 type AggregateCartItem {
   count: Int!
@@ -18,6 +18,10 @@ type AggregateOrder {
 }
 
 type AggregateOrderItem {
+  count: Int!
+}
+
+type AggregateSearchEngineItem {
   count: Int!
 }
 
@@ -217,6 +221,7 @@ input CartItemUpdateManyMutationInput {
 input CartItemUpdateManyWithoutUserInput {
   create: [CartItemCreateWithoutUserInput!]
   connect: [CartItemWhereUniqueInput!]
+  set: [CartItemWhereUniqueInput!]
   disconnect: [CartItemWhereUniqueInput!]
   delete: [CartItemWhereUniqueInput!]
   update: [CartItemUpdateWithWhereUniqueWithoutUserInput!]
@@ -1082,6 +1087,7 @@ input ItemUpdateManyMutationInput {
 input ItemUpdateManyWithoutUserInput {
   create: [ItemCreateWithoutUserInput!]
   connect: [ItemWhereUniqueInput!]
+  set: [ItemWhereUniqueInput!]
   disconnect: [ItemWhereUniqueInput!]
   delete: [ItemWhereUniqueInput!]
   update: [ItemUpdateWithWhereUniqueWithoutUserInput!]
@@ -1306,36 +1312,42 @@ scalar Long
 type Mutation {
   createCartItem(data: CartItemCreateInput!): CartItem!
   createOrder(data: OrderCreateInput!): Order!
+  createSearchEngineItem(data: SearchEngineItemCreateInput!): SearchEngineItem!
   createItem(data: ItemCreateInput!): Item!
   createFile(data: FileCreateInput!): File!
   createOrderItem(data: OrderItemCreateInput!): OrderItem!
   createUser(data: UserCreateInput!): User!
   updateCartItem(data: CartItemUpdateInput!, where: CartItemWhereUniqueInput!): CartItem
   updateOrder(data: OrderUpdateInput!, where: OrderWhereUniqueInput!): Order
+  updateSearchEngineItem(data: SearchEngineItemUpdateInput!, where: SearchEngineItemWhereUniqueInput!): SearchEngineItem
   updateItem(data: ItemUpdateInput!, where: ItemWhereUniqueInput!): Item
   updateFile(data: FileUpdateInput!, where: FileWhereUniqueInput!): File
   updateOrderItem(data: OrderItemUpdateInput!, where: OrderItemWhereUniqueInput!): OrderItem
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   deleteCartItem(where: CartItemWhereUniqueInput!): CartItem
   deleteOrder(where: OrderWhereUniqueInput!): Order
+  deleteSearchEngineItem(where: SearchEngineItemWhereUniqueInput!): SearchEngineItem
   deleteItem(where: ItemWhereUniqueInput!): Item
   deleteFile(where: FileWhereUniqueInput!): File
   deleteOrderItem(where: OrderItemWhereUniqueInput!): OrderItem
   deleteUser(where: UserWhereUniqueInput!): User
   upsertCartItem(where: CartItemWhereUniqueInput!, create: CartItemCreateInput!, update: CartItemUpdateInput!): CartItem!
   upsertOrder(where: OrderWhereUniqueInput!, create: OrderCreateInput!, update: OrderUpdateInput!): Order!
+  upsertSearchEngineItem(where: SearchEngineItemWhereUniqueInput!, create: SearchEngineItemCreateInput!, update: SearchEngineItemUpdateInput!): SearchEngineItem!
   upsertItem(where: ItemWhereUniqueInput!, create: ItemCreateInput!, update: ItemUpdateInput!): Item!
   upsertFile(where: FileWhereUniqueInput!, create: FileCreateInput!, update: FileUpdateInput!): File!
   upsertOrderItem(where: OrderItemWhereUniqueInput!, create: OrderItemCreateInput!, update: OrderItemUpdateInput!): OrderItem!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   updateManyCartItems(data: CartItemUpdateManyMutationInput!, where: CartItemWhereInput): BatchPayload!
   updateManyOrders(data: OrderUpdateManyMutationInput!, where: OrderWhereInput): BatchPayload!
+  updateManySearchEngineItems(data: SearchEngineItemUpdateManyMutationInput!, where: SearchEngineItemWhereInput): BatchPayload!
   updateManyItems(data: ItemUpdateManyMutationInput!, where: ItemWhereInput): BatchPayload!
   updateManyFiles(data: FileUpdateManyMutationInput!, where: FileWhereInput): BatchPayload!
   updateManyOrderItems(data: OrderItemUpdateManyMutationInput!, where: OrderItemWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   deleteManyCartItems(where: CartItemWhereInput): BatchPayload!
   deleteManyOrders(where: OrderWhereInput): BatchPayload!
+  deleteManySearchEngineItems(where: SearchEngineItemWhereInput): BatchPayload!
   deleteManyItems(where: ItemWhereInput): BatchPayload!
   deleteManyFiles(where: FileWhereInput): BatchPayload!
   deleteManyOrderItems(where: OrderItemWhereInput): BatchPayload!
@@ -1792,6 +1804,7 @@ input OrderItemUpdateManyDataInput {
 input OrderItemUpdateManyInput {
   create: [OrderItemCreateInput!]
   connect: [OrderItemWhereUniqueInput!]
+  set: [OrderItemWhereUniqueInput!]
   disconnect: [OrderItemWhereUniqueInput!]
   delete: [OrderItemWhereUniqueInput!]
   update: [OrderItemUpdateWithWhereUniqueNestedInput!]
@@ -2349,18 +2362,21 @@ enum Permission {
 type Query {
   cartItems(where: CartItemWhereInput, orderBy: CartItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CartItem]!
   orders(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Order]!
+  searchEngineItems(where: SearchEngineItemWhereInput, orderBy: SearchEngineItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SearchEngineItem]!
   items(where: ItemWhereInput, orderBy: ItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Item]!
   files(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [File]!
   orderItems(where: OrderItemWhereInput, orderBy: OrderItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [OrderItem]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   cartItem(where: CartItemWhereUniqueInput!): CartItem
   order(where: OrderWhereUniqueInput!): Order
+  searchEngineItem(where: SearchEngineItemWhereUniqueInput!): SearchEngineItem
   item(where: ItemWhereUniqueInput!): Item
   file(where: FileWhereUniqueInput!): File
   orderItem(where: OrderItemWhereUniqueInput!): OrderItem
   user(where: UserWhereUniqueInput!): User
   cartItemsConnection(where: CartItemWhereInput, orderBy: CartItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CartItemConnection!
   ordersConnection(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OrderConnection!
+  searchEngineItemsConnection(where: SearchEngineItemWhereInput, orderBy: SearchEngineItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SearchEngineItemConnection!
   itemsConnection(where: ItemWhereInput, orderBy: ItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ItemConnection!
   filesConnection(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FileConnection!
   orderItemsConnection(where: OrderItemWhereInput, orderBy: OrderItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OrderItemConnection!
@@ -2373,9 +2389,431 @@ type Query {
   ): Node
 }
 
+type SearchEngineItem implements Node {
+  id: ID!
+  title: String
+  url: String
+  description: String
+  keywords: String
+  mainContent: String
+  secondaryContent: String
+}
+
+"""A connection to a list of items."""
+type SearchEngineItemConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [SearchEngineItemEdge]!
+  aggregate: AggregateSearchEngineItem!
+}
+
+input SearchEngineItemCreateInput {
+  title: String
+  url: String
+  description: String
+  keywords: String
+  mainContent: String
+  secondaryContent: String
+}
+
+"""An edge in a connection."""
+type SearchEngineItemEdge {
+  """The item at the end of the edge."""
+  node: SearchEngineItem!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum SearchEngineItemOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  url_ASC
+  url_DESC
+  description_ASC
+  description_DESC
+  keywords_ASC
+  keywords_DESC
+  mainContent_ASC
+  mainContent_DESC
+  secondaryContent_ASC
+  secondaryContent_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type SearchEngineItemPreviousValues {
+  id: ID!
+  title: String
+  url: String
+  description: String
+  keywords: String
+  mainContent: String
+  secondaryContent: String
+}
+
+type SearchEngineItemSubscriptionPayload {
+  mutation: MutationType!
+  node: SearchEngineItem
+  updatedFields: [String!]
+  previousValues: SearchEngineItemPreviousValues
+}
+
+input SearchEngineItemSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [SearchEngineItemSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [SearchEngineItemSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [SearchEngineItemSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: SearchEngineItemWhereInput
+}
+
+input SearchEngineItemUpdateInput {
+  title: String
+  url: String
+  description: String
+  keywords: String
+  mainContent: String
+  secondaryContent: String
+}
+
+input SearchEngineItemUpdateManyMutationInput {
+  title: String
+  url: String
+  description: String
+  keywords: String
+  mainContent: String
+  secondaryContent: String
+}
+
+input SearchEngineItemWhereInput {
+  """Logical AND on all given filters."""
+  AND: [SearchEngineItemWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [SearchEngineItemWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [SearchEngineItemWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  url: String
+
+  """All values that are not equal to given value."""
+  url_not: String
+
+  """All values that are contained in given list."""
+  url_in: [String!]
+
+  """All values that are not contained in given list."""
+  url_not_in: [String!]
+
+  """All values less than the given value."""
+  url_lt: String
+
+  """All values less than or equal the given value."""
+  url_lte: String
+
+  """All values greater than the given value."""
+  url_gt: String
+
+  """All values greater than or equal the given value."""
+  url_gte: String
+
+  """All values containing the given string."""
+  url_contains: String
+
+  """All values not containing the given string."""
+  url_not_contains: String
+
+  """All values starting with the given string."""
+  url_starts_with: String
+
+  """All values not starting with the given string."""
+  url_not_starts_with: String
+
+  """All values ending with the given string."""
+  url_ends_with: String
+
+  """All values not ending with the given string."""
+  url_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  keywords: String
+
+  """All values that are not equal to given value."""
+  keywords_not: String
+
+  """All values that are contained in given list."""
+  keywords_in: [String!]
+
+  """All values that are not contained in given list."""
+  keywords_not_in: [String!]
+
+  """All values less than the given value."""
+  keywords_lt: String
+
+  """All values less than or equal the given value."""
+  keywords_lte: String
+
+  """All values greater than the given value."""
+  keywords_gt: String
+
+  """All values greater than or equal the given value."""
+  keywords_gte: String
+
+  """All values containing the given string."""
+  keywords_contains: String
+
+  """All values not containing the given string."""
+  keywords_not_contains: String
+
+  """All values starting with the given string."""
+  keywords_starts_with: String
+
+  """All values not starting with the given string."""
+  keywords_not_starts_with: String
+
+  """All values ending with the given string."""
+  keywords_ends_with: String
+
+  """All values not ending with the given string."""
+  keywords_not_ends_with: String
+  mainContent: String
+
+  """All values that are not equal to given value."""
+  mainContent_not: String
+
+  """All values that are contained in given list."""
+  mainContent_in: [String!]
+
+  """All values that are not contained in given list."""
+  mainContent_not_in: [String!]
+
+  """All values less than the given value."""
+  mainContent_lt: String
+
+  """All values less than or equal the given value."""
+  mainContent_lte: String
+
+  """All values greater than the given value."""
+  mainContent_gt: String
+
+  """All values greater than or equal the given value."""
+  mainContent_gte: String
+
+  """All values containing the given string."""
+  mainContent_contains: String
+
+  """All values not containing the given string."""
+  mainContent_not_contains: String
+
+  """All values starting with the given string."""
+  mainContent_starts_with: String
+
+  """All values not starting with the given string."""
+  mainContent_not_starts_with: String
+
+  """All values ending with the given string."""
+  mainContent_ends_with: String
+
+  """All values not ending with the given string."""
+  mainContent_not_ends_with: String
+  secondaryContent: String
+
+  """All values that are not equal to given value."""
+  secondaryContent_not: String
+
+  """All values that are contained in given list."""
+  secondaryContent_in: [String!]
+
+  """All values that are not contained in given list."""
+  secondaryContent_not_in: [String!]
+
+  """All values less than the given value."""
+  secondaryContent_lt: String
+
+  """All values less than or equal the given value."""
+  secondaryContent_lte: String
+
+  """All values greater than the given value."""
+  secondaryContent_gt: String
+
+  """All values greater than or equal the given value."""
+  secondaryContent_gte: String
+
+  """All values containing the given string."""
+  secondaryContent_contains: String
+
+  """All values not containing the given string."""
+  secondaryContent_not_contains: String
+
+  """All values starting with the given string."""
+  secondaryContent_starts_with: String
+
+  """All values not starting with the given string."""
+  secondaryContent_not_starts_with: String
+
+  """All values ending with the given string."""
+  secondaryContent_ends_with: String
+
+  """All values not ending with the given string."""
+  secondaryContent_not_ends_with: String
+}
+
+input SearchEngineItemWhereUniqueInput {
+  id: ID
+}
+
 type Subscription {
   cartItem(where: CartItemSubscriptionWhereInput): CartItemSubscriptionPayload
   order(where: OrderSubscriptionWhereInput): OrderSubscriptionPayload
+  searchEngineItem(where: SearchEngineItemSubscriptionWhereInput): SearchEngineItemSubscriptionPayload
   item(where: ItemSubscriptionWhereInput): ItemSubscriptionPayload
   file(where: FileSubscriptionWhereInput): FileSubscriptionPayload
   orderItem(where: OrderItemSubscriptionWhereInput): OrderItemSubscriptionPayload

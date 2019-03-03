@@ -5,6 +5,10 @@ require("dotenv").config({ path: "./variables.env" })
 const createServer = require("./createServer")
 const db = require("./db")
 const { runAllJobs } = require("./cronjobs")
+const { deleteSearches } = require("./lib/deleteSearchNodes")
+
+deleteSearches()
+
 // const { tronCrawler } = require("./lib/websiteCrawler")
 
 // run all our cron jobs

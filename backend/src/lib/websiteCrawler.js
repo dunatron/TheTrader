@@ -1,5 +1,6 @@
 var Crawler = require("crawler")
 const path = require("path")
+const db = require("../db")
 var fs = require("fs")
 
 let already_crawled = []
@@ -78,6 +79,12 @@ const crawlPage = (error, res, done) => {
     // get page content from tags
     const mainContent = getContentFromTags($, ["h1", "h2", "h3", "h4"])
     const secondaryContent = getContentFromTags($, ["p"])
+
+    const allUsers = db.mutation.createSearchEngineItem(
+      { data: {} },
+      `{ id name email }`
+    ) //pass additional fields here yo wanna get
+    console.log("allUserSoFar ->", allUsers)
 
     // add scrapped data to our crawled_data array
     crawled_data.push({

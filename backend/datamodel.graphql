@@ -105,3 +105,23 @@ enum CURRENCY_CODES {
   PLN
   ILS
 }
+
+type SearchEngineItem {
+  id: ID! @unique
+  title: String
+  url: String
+  description: String
+  keywords: String
+  mainContent: String
+  secondaryContent: String
+}
+
+# crawled_data.push({
+#       id: pageId,
+#       title: pageTitle,
+#       url: uri,
+#       description: description,
+#       keywords: keywords,
+#       mainContent: mainContent,
+#       secondaryContent: secondaryContent,
+#     })

@@ -248,3 +248,36 @@ PORT=4444
      - SOLUTION add to package.json scripts `"heroku-postbuild": "next build"`
      - You also need to modify the `start` command in package.json scripts `"start": "next start -p $PORT"`
      - run `git subtree push --prefix frontend heroku-frontend master`
+
+## API
+
+### C5("DON'T CRY")
+
+```js
+mutation createSearchEngineItem($data: SearchEngineItemCreateInput!) {
+  createSearchEngineItem(data:$data) {
+    id
+    title
+    url
+    keywords
+    description
+    mainContent
+    secondaryContent
+  }
+}
+```
+
+#### variables
+
+```json
+{
+  "data": {
+    "title": "A title Page for a webpage",
+    "url": "https://www.swtor.com/",
+    "keywords": "Star Wars, Star Wars Games, online game, mmo, mmorpg, rpg, information, BioWare, Bioware games, LucasArts, Lucasarts games, Star Wars The Old Republic, The Old Republic, Knights of the Old Republic MMO, KOTOR MMO, KOTOR, TOR, SWTOR, SWTOR MMO, Star Wars MMO, BioWare MMO, LucasArts MMO, massively multiplayer online game, massively multiplayer online role playing game",
+    "description": "Official site. BioWare and LucasArts bring you the next evolution in MMO Gameplay: Story.",
+    "mainContent": "<h1>Header Tags on this page</h1>",
+    "secondaryContent": "<p>Paragraphs on pages?Note you will want a lot of resources<p>"
+  }
+}
+```

@@ -156,7 +156,7 @@ export default class PolySearch extends Component {
 
   getSearchFile = () => {
     return new Promise(function(resolve, reject) {
-      fetch(`${serverEndpoint}/tron-search`)
+      fetch(`${serverEndpoint}tron-search`)
         .then(resp => resp.json()) // Transform the data into json
         .then(function(data) {
           if (data) resolve(data)
