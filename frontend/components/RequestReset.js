@@ -3,6 +3,8 @@ import { Mutation } from "react-apollo"
 import gql from "graphql-tag"
 import Form from "./styles/Form"
 import Error from "./ErrorMessage"
+import FabButton from "./styles/FabButton"
+import NavigationIcon from "@material-ui/icons/Navigation"
 
 const REQUEST_RESET_MUTATION = gql`
   mutation REQUEST_RESET_MUTATION($email: String!) {
@@ -48,7 +50,15 @@ class RequestReset extends Component {
                 />
               </label>
 
-              <button type="submit">Request Reset!</button>
+              <FabButton
+                type="submit"
+                variant="extended"
+                color="primary"
+                aria-label="Add"
+                style={{ minWidth: 160 }}>
+                <NavigationIcon style={{ marginRight: 5 }} />
+                Request Reset
+              </FabButton>
             </fieldset>
           </Form>
         )}

@@ -5,6 +5,8 @@ import Form from "./styles/Form"
 import Error from "./ErrorMessage"
 import { CURRENT_USER_QUERY } from "./User"
 import { openSnackbar } from "../components/Notifier"
+import FabButton from "./styles/FabButton"
+import NavigationIcon from "@material-ui/icons/Navigation"
 
 const SIGNUP_MUTATION = gql`
   mutation SIGNUP_MUTATION(
@@ -85,7 +87,15 @@ class Signup extends Component {
                 />
               </label>
 
-              <button type="submit">Sign Up!</button>
+              <FabButton
+                type="submit"
+                variant="extended"
+                color="primary"
+                aria-label="Add"
+                style={{ minWidth: 160 }}>
+                <NavigationIcon style={{ marginRight: 5 }} />
+                Sign Up
+              </FabButton>
             </fieldset>
           </Form>
         )}

@@ -44,7 +44,6 @@ export default class Items extends Component {
   render() {
     return (
       <Center>
-        <p>Items</p>
         <Pagination page={this.props.page} />
         <Query
           query={ALL_ITEMS_QUERY}

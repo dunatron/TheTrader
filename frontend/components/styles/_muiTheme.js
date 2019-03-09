@@ -353,6 +353,7 @@ const theme = {
     keys: ["xs", "sm", "md", "lg", "xl"],
     values: { xs: 0, sm: 600, md: 960, lg: 1280, xl: 1920 },
   },
+  
   form: {
     fields: {
       marginTop: "16px",
@@ -391,11 +392,17 @@ const theme = {
     //   dark: "#1b1b1b",
     //   contrastText: "#ffffff",
     // },
-    primary: green,
+    // primary: green,
+    primary: {
+      light: "#000",
+      main: "#000",
+      dark: "#000",
+      contrastText: "#ffffff",
+    },
     secondary: {
-      light: "#ff5bb1",
-      main: "#dd1482",
-      dark: "#a60056",
+      light: "#000",
+      main: "#000",
+      dark: "#000",
       contrastText: "#ffffff",
     },
     error: {

@@ -21,7 +21,7 @@ const StyledPage = styled.div`
 `
 
 const Inner = styled.div`
-  max-width: ${props => props.theme.maxWidth}px;
+  max-width: ${props => props.theme.maxWidth};
   margin: 0 auto;
   padding: 1rem;
 `
@@ -77,6 +77,10 @@ const GlobalStyle = createGlobalStyle`
   }
   button {  font-family: ${theme.typography.fontFamily}; }
   #nprogress {
+    background-color: azure;
+    width: 100%;
+    position: fixed;
+    top: 0;
     .bar {
       height:5px;
       background: ${theme.palette.secondary.main};
@@ -109,9 +113,10 @@ class Page extends Component {
               <Inner>{this.props.children}</Inner>
             </StyledPage>
           </ThemeProvider>
-          <GlobalStyle />
+          {/* <GlobalStyle /> */}
         </MuiThemeProvider>
         {/* <GlobalStyle /> */}
+        <GlobalStyle />
       </NoSsr>
     )
   }
